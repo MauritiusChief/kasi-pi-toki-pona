@@ -30,7 +30,7 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
       ...current,
       {
         id: createId("entry"),
-        summary: "空句子",
+        summary: "（空）",
         expanded: true,
         sending: false,
         elapsed: 0, // TODO: 需要适配LLM的思索（若有）
@@ -84,6 +84,7 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
               if (typeof newEntry.tkContext === 'string' && typeof newEntry.tkSubject === 'string' && typeof newEntry.tkOther === 'string') {
                 newEntry.summary = `${trct(newEntry.tkContext)} | ${trct(newEntry.tkSubject)} | ${trct(newEntry.tkOther)}`
               }
+              if (newEntry.tkContext === '' && newEntry.tkSubject === '' && newEntry.tkOther === '') newEntry.summary = '（空）'
               return newEntry
             } else {
               return entry
