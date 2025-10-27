@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useEffect } from "react";
 import type { DictionaryEntry } from "@/types/dictionary";
-import { getDictionaryEntries } from "@/lib/dictionaryClient";
-import { AppContextData, useAppContext } from "@/components/ContextProvider";
+import { loadDictionary } from "@/lib/dictionaryClient";
+import { useAppContext } from "@/components/ContextProvider";
 
 /**
  * 根据搜索的文本，返回命中的字典条目行以及其他需要的函数
@@ -11,41 +11,11 @@ import { AppContextData, useAppContext } from "@/components/ContextProvider";
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const contextData = useAppContext().data;
-  const setContextData = useAppContext().setContextData;
+  const appContext = useAppContext();
+  const contextData = appContext.data;
 
   useEffect(() => {
-    const loadDictionary = async () => {
-      // 加载中状态
-      const newContextData: AppContextData = {...contextData,
-        status: { ...contextData.status,
-          dictionary: { ...contextData.status.dictionary, state: "loading" }
-        }
-      };
-      setContextData(newContextData)
-      try {
-        const entries = await getDictionaryEntries();
-        // 成功加载状态
-        const successContextData: AppContextData = {...contextData,
-          dictionaryEntries: entries,
-          status: { ...contextData.status,
-            dictionary: { ...contextData.status.dictionary, state: "success", totalEntries: entries.length }
-          }
-        };
-        setContextData(successContextData )
-      } catch (error) {
-        console.error("Failed to load dictionary:", error);
-        // 加载失败状态
-        const errorContextData: AppContextData = {...contextData,
-          status: { ...contextData.status,
-            dictionary: { ...contextData.status.dictionary, state: "error", errorMessage: String(error) }
-          }
-        };
-        setContextData(errorContextData)
-      }
-    };
-
-    loadDictionary();
+    loadDictionary(appContext);
   }, []);
 
   const rows = contextData.dictionaryEntries;

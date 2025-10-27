@@ -1,3 +1,4 @@
+import { AppContextData, AppContextType } from "@/components/ContextProvider";
 import type { DictionaryEntry } from "@/types/dictionary";
 
 export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
@@ -35,5 +36,42 @@ export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
     console.error('Error loading dictionary entries:', error);
     // 如果加载失败，返回空数组作为降级方案
     return [];
+  }
+}
+
+/**
+ * 呼叫getDictionaryEntries函数，把返回的结果视状态（成功/失败）放入Context
+ * @param appContext 装载字典目录的Context
+ */
+export async function loadDictionary(appContext: AppContextType) {
+  const contextData = appContext.data;
+  const setContextData = appContext.setContextData;
+
+  // 加载中状态
+  const newContextData: AppContextData = {...contextData,
+    status: { ...contextData.status,
+      dictionary: { ...contextData.status.dictionary, state: "loading" }
+    }
+  };
+  setContextData(newContextData)
+  try {
+    const entries = await getDictionaryEntries();
+    // 成功加载状态
+    const successContextData: AppContextData = {...contextData,
+      dictionaryEntries: entries,
+      status: { ...contextData.status,
+        dictionary: { ...contextData.status.dictionary, state: "success", totalEntries: entries.length }
+      }
+    };
+    setContextData(successContextData )
+  } catch (error) {
+    console.error("Failed to load dictionary:", error);
+    // 加载失败状态
+    const errorContextData: AppContextData = {...contextData,
+      status: { ...contextData.status,
+        dictionary: { ...contextData.status.dictionary, state: "error", errorMessage: String(error) }
+      }
+    };
+    setContextData(errorContextData)
   }
 }
