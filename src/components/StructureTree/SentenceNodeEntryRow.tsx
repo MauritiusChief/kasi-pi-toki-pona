@@ -1,4 +1,3 @@
-// 暂时废弃，需要解决 useStructureTree() 在不同文件中呼叫会产生不同状态的困境
 "use client";
 
 import { Dispatch, SetStateAction } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useApiStatusPlaceholder, useDictionaryStatus } from "@/hooks/useStatus";
+import { useAppContext } from "@/components/ContextProvider";
 import type { ApiStatus, DictionaryStatus, StatusState } from "@/types/status";
 
 /**
@@ -86,8 +86,9 @@ function renderApiBadge(state: StatusState, message?: string) {
  * @returns
  */
 export function StatusBar() {
-  const dictionaryStatus: DictionaryStatus = useDictionaryStatus();
-  const apiStatus: ApiStatus = useApiStatusPlaceholder();
+  const appContextData = useAppContext().data
+  const dictionaryStatus: DictionaryStatus = appContextData.status.dictionary;
+  const apiStatus: ApiStatus = appContextData.status.api;
 
   return (
     <div className="flex flex-wrap items-center gap-3" data-testid="status-bar">
