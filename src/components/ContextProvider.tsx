@@ -6,14 +6,14 @@ import { ApiStatus, DictionaryStatus } from "@/types/status";
 /**
  * 规范所有需要跨组件共享的数据信息和函数
  */
-type AppContextType = {
+export type AppContextType = {
   data: AppContextData,
   setContextData: Dispatch<SetStateAction<AppContextData>>
 }
 /**
  * 共享的数据
  */
-type AppContextData = {
+export type AppContextData = {
   status: {
     dictionary: DictionaryStatus,
     api: ApiStatus,
