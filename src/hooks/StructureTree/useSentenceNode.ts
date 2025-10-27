@@ -5,8 +5,7 @@ import { createId } from "@/lib/createId";
 import { SentenceNodeEntry } from "@/types/structure";
 
 /**
- * 在句子一级管理结构树
- * @param entries 结构树条目
+ * 使用setEntries创建管理函数，在句子一级管理结构树
  * @param setEntries 对应的setXxx函数
  * @returns
  */
