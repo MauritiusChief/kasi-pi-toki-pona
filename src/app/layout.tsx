@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Kasi pi Toki Pona",
-  description: "A Toki Pona language tool",
+  title: "kasi pi Toki Pona",
+  description: "A Chinese → Toki Pona translating tool",
 };
 
 export default function RootLayout({
