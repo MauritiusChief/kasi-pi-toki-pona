@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
+import { getDictionaryEntries } from "@/lib/dictionaryClient";
 
 export async function GET() {
   try {

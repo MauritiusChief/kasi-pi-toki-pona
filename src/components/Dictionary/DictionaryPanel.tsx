@@ -1,7 +1,7 @@
 "use client";
 
 import { useDictionarySearch } from "@/hooks/useDictionarySearch";
-import { HighlightedText } from "@/lib/placeholders/highlight";
+import { HighlightedText } from "@/lib/highlight";
 
 /**
  * 字典面板：查询字典和显示查询结果
