@@ -1,6 +1,6 @@
 "use client";
 
-import { useStructureTreePlaceholder } from "../../hooks/useStructureTreePlaceholder";
+import { useStructureTreePlaceholder } from "@/hooks/useStructureTreePlaceholder";
 
 export function StructureTreePanel() {
   const {

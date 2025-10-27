@@ -1,6 +1,6 @@
 "use client";
 
-import { useParserPlaceholder } from "../../hooks/useParserPlaceholder";
+import { useParserPlaceholder } from "@/hooks/useParserPlaceholder";
 
 export function ParserPanel() {
   const { inputSentence, setInputSentence, isParsing, parse, resultSentence, inputHint } =

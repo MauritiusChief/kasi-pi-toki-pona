@@ -1,7 +1,7 @@
 "use client";
 
-import { useApiStatusPlaceholder, useDictionaryStatusPlaceholder } from "../../hooks/useStatusPlaceholders";
-import type { ApiStatus, DictionaryStatus, StatusState } from "../../types/status";
+import { useApiStatusPlaceholder, useDictionaryStatusPlaceholder } from "@/hooks/useStatusPlaceholders";
+import type { ApiStatus, DictionaryStatus, StatusState } from "@/types/status";
 
 function renderDictionaryBadge({ state, totalEntries, errorMessage }: DictionaryStatus) {
   switch (state) {

@@ -1,4 +1,4 @@
-import type { DictionaryEntry } from "../../types/dictionary";
+import type { DictionaryEntry } from "@/types/dictionary";
 
 export function getSampleDictionaryEntries(): DictionaryEntry[] {
   return [

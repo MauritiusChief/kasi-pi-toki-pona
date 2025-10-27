@@ -1,7 +1,7 @@
 "use client";
 
-import { useDictionarySearch } from "../../hooks/useDictionarySearch";
-import { HighlightedText } from "../../lib/placeholders/highlight";
+import { useDictionarySearch } from "@/hooks/useDictionarySearch";
+import { HighlightedText } from "@/lib/placeholders/highlight";
 
 export function DictionaryPanel() {
   const { searchText, setSearchText, filteredRows } = useDictionarySearch();

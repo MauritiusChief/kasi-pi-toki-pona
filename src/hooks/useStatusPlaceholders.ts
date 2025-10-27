@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { ApiStatus, DictionaryStatus } from "../types/status";
+import type { ApiStatus, DictionaryStatus } from "@/types/status";
 
 export function useDictionaryStatusPlaceholder(): DictionaryStatus {
   return useMemo(

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSampleDictionaryEntries } from "../../../lib/placeholders/dictionaryClient";
+import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
 
 export async function GET() {
   return NextResponse.json({

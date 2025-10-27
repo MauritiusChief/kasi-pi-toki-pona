@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { DictionaryEntry } from "../types/dictionary";
-import { getSampleDictionaryEntries } from "../lib/placeholders/dictionaryClient";
+import type { DictionaryEntry } from "@/types/dictionary";
+import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
 
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
