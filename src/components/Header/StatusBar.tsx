@@ -1,6 +1,6 @@
 "use client";
 
-import { useApiStatusPlaceholder, useDictionaryStatusPlaceholder } from "@/hooks/useStatusPlaceholders";
+import { useApiStatusPlaceholder, useDictionaryStatus } from "@/hooks/useStatus";
 import type { ApiStatus, DictionaryStatus, StatusState } from "@/types/status";
 
 /**
@@ -86,7 +86,7 @@ function renderApiBadge(state: StatusState, message?: string) {
  * @returns
  */
 export function StatusBar() {
-  const dictionaryStatus: DictionaryStatus = useDictionaryStatusPlaceholder();
+  const dictionaryStatus: DictionaryStatus = useDictionaryStatus();
   const apiStatus: ApiStatus = useApiStatusPlaceholder();
 
   return (
