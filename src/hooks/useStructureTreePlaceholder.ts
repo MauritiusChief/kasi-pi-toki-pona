@@ -7,21 +7,8 @@ function createId(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-const INITIAL_ENTRIES: StructureEntry[] = [
-  {
-    id: "entry-1",
-    summary: "条目 1：示例结构",
-    expanded: false,
-    sending: false,
-    elapsed: 0,
-    情景: "示例情景",
-    主语: "示例主语",
-    其他: "示例其他信息",
-  },
-];
-
 export function useStructureTreePlaceholder() {
-  const [entries, setEntries] = useState<StructureEntry[]>(INITIAL_ENTRIES);
+  const [entries, setEntries] = useState<StructureEntry[]>([]);
 
   const toggleStructureRow = useCallback((id: string) => {
     setEntries((current) =>
@@ -36,13 +23,13 @@ export function useStructureTreePlaceholder() {
       ...current,
       {
         id: createId("entry"),
-        summary: `条目 ${current.length + 1}：待完善`,
+        summary: "空句子",
         expanded: true,
         sending: false,
-        elapsed: 0,
-        情景: "",
-        主语: "",
-        其他: "",
+        elapsed: 0, // TODO: 需要适配LLM的思索（若有）
+        tkContext: "",
+        tkSubject: "",
+        tkOther: "",
       },
     ]);
   }, []);
@@ -62,7 +49,7 @@ export function useStructureTreePlaceholder() {
   const loadingHint = useMemo(() => "点击条目右侧的箭头可单独发送，展开后可编辑详情。", []);
 
   const updateEntryField = useCallback(
-    (id: string, field: keyof Pick<StructureEntry, "summary" | "情景" | "主语" | "其他">, value: string) => {
+    (id: string, field: keyof Pick<StructureEntry, "summary" | "tkContext" | "tkSubject" | "tkOther">, value: string) => {
       setEntries((current) =>
         current.map((entry) =>
           entry.id === id
