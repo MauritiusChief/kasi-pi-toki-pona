@@ -4,6 +4,10 @@ import { useMemo, useState } from "react";
 import type { DictionaryEntry } from "@/types/dictionary";
 import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
 
+/**
+ * 根据搜索的文本，返回命中的字典条目行以及其他需要的函数
+ * @returns
+ */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
   const rows = useMemo(() => getSampleDictionaryEntries(), []);

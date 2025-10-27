@@ -1,5 +1,11 @@
 import { Fragment } from "react";
 
+/**
+ * 返回对应的搜索文本被高亮的字典条目行的片段
+ * 比如搜索"a", 高亮"j[a]n"
+ * @param param 被高亮的文本 text 和查询的字段 query
+ * @returns
+ */
 export function HighlightedText({ text, query }: { text: string; query: string }) {
   if (!query) {
     return <>{text}</>;
@@ -30,16 +36,16 @@ export function HighlightedText({ text, query }: { text: string; query: string }
   }
 
   return (
-    <Fragment>
+    <>
       {segments.map((segment, segmentIndex) =>
         segment.highlighted ? (
-          <mark key={segmentIndex} className="bg-yellow-200 text-gray-900">
+          <span key={segmentIndex} className="font-bold">
             {segment.value}
-          </mark>
+          </span>
         ) : (
           <Fragment key={segmentIndex}>{segment.value}</Fragment>
         )
       )}
-    </Fragment>
+    </>
   );
 }

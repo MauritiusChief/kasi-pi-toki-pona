@@ -8,6 +8,11 @@ type PlaceholderButtonProps = {
   onClickPlaceholder?: () => void;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">;
 
+/**
+ * 按钮占位符，未来根据不同按钮功能设定不同的onClick函数，目前无功能
+ * @param param0
+ * @returns
+ */
 export function PlaceholderButton({
   label,
   tooltip,

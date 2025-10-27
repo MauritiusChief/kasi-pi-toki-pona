@@ -2,6 +2,10 @@
 
 import { useParserPlaceholder } from "@/hooks/useParserPlaceholder";
 
+/**
+ * 解析面板：上部为输入框和发送按钮，下部为结果框/思考过程框（TODO: 在此以日志条目的样式显示思考过程）
+ * @returns
+ */
 export function ParserPanel() {
   const { inputSentence, setInputSentence, isParsing, parse, resultSentence, inputHint } =
     useParserPlaceholder();
@@ -9,12 +13,15 @@ export function ParserPanel() {
   return (
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="parser-panel">
       <div className="grid h-full grid-rows-2 gap-4">
+        {/* 输入部分 */}
         <div className="flex flex-col">
           <div className="mb-2 flex gap-2">
+            {/* 标题 */}
             <div className="w-full">
               <h2 className="text-base font-semibold">输入</h2>
               <p className="mt-0.5 text-xs text-gray-500">{inputHint}</p>
             </div>
+            {/* 发送按钮 */}
             <button
               type="button"
               onClick={parse}
@@ -42,6 +49,7 @@ export function ParserPanel() {
           />
         </div>
 
+        {/* 结果部分 */}
         <div className="flex flex-col">
           <div className="mb-2">
             <h2 className="text-base font-semibold">结果</h2>

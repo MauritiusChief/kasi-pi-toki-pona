@@ -3,6 +3,11 @@
 import { useApiStatusPlaceholder, useDictionaryStatusPlaceholder } from "@/hooks/useStatusPlaceholders";
 import type { ApiStatus, DictionaryStatus, StatusState } from "@/types/status";
 
+/**
+ * 根据字典状态信息返回span tag
+ * @param DictionaryStatus 字典的状态
+ * @returns 字典状态span tag
+ */
 function renderDictionaryBadge({ state, totalEntries, errorMessage }: DictionaryStatus) {
   switch (state) {
     case "loading":
@@ -36,6 +41,12 @@ function renderDictionaryBadge({ state, totalEntries, errorMessage }: Dictionary
   }
 }
 
+/**
+ * 根据API状态信息返回span tag
+ * @param state API状态
+ * @param message 需要显示的信息
+ * @returns API状态span tag
+ */
 function renderApiBadge(state: StatusState, message?: string) {
   const baseClass = "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium";
   switch (state) {
@@ -70,6 +81,10 @@ function renderApiBadge(state: StatusState, message?: string) {
   }
 }
 
+/**
+ * 状态栏：显示字典加载状态和API状态
+ * @returns
+ */
 export function StatusBar() {
   const dictionaryStatus: DictionaryStatus = useDictionaryStatusPlaceholder();
   const apiStatus: ApiStatus = useApiStatusPlaceholder();

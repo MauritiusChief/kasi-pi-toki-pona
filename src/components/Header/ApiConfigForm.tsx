@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+/**
+ * API管理栏：输入API地址(deepseek, openai, etc)和API密钥
+ * @returns
+ */
 export function ApiConfigForm() {
   const [apiUrl, setApiUrl] = useState("https://api.example.com/parse");
   const [apiKey, setApiKey] = useState("");

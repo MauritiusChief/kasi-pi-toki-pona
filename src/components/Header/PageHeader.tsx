@@ -2,6 +2,10 @@ import ApiConfigForm from "./ApiConfigForm";
 import DictionaryControls from "./DictionaryControls";
 import StatusBar from "./StatusBar";
 
+/**
+ * 页面的header tag
+ * @returns
+ */
 export function PageHeader() {
   return (
     <header className="border-b bg-white" data-testid="page-header">

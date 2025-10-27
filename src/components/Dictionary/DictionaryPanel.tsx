@@ -3,6 +3,10 @@
 import { useDictionarySearch } from "@/hooks/useDictionarySearch";
 import { HighlightedText } from "@/lib/placeholders/highlight";
 
+/**
+ * 字典面板：查询字典和显示查询结果
+ * @returns
+ */
 export function DictionaryPanel() {
   const { searchText, setSearchText, filteredRows } = useDictionarySearch();
 
@@ -10,7 +14,7 @@ export function DictionaryPanel() {
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="dictionary-panel">
       <div className="mb-3">
         <h2 className="text-base font-semibold">查询字典</h2>
-        <p className="mt-0.5 text-xs text-gray-500">这里展示字典查询结果（占位）。</p>
+        <p className="mt-0.5 text-xs text-gray-500">当前字典：占位</p>
       </div>
 
       <div className="mb-3 flex gap-2">
