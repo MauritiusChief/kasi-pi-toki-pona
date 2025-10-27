@@ -2,6 +2,7 @@
 
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 import { ApiStatus, DictionaryStatus } from "@/types/status";
+import { DictionaryEntry } from "@/types/dictionary";
 
 /**
  * 规范所有需要跨组件共享的数据信息和函数
@@ -14,6 +15,7 @@ export type AppContextType = {
  * 共享的数据
  */
 export type AppContextData = {
+  dictionaryEntries: DictionaryEntry[],
   status: {
     dictionary: DictionaryStatus,
     api: ApiStatus,
@@ -21,6 +23,7 @@ export type AppContextData = {
 }
 
 const defaultAppContextData: AppContextData = {
+  dictionaryEntries: [],
   status: {
     dictionary: {state: "loading", totalEntries: 0, errorMessage: ""},
     api: {state: "loading", message: ""},

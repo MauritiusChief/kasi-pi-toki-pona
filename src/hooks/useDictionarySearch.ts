@@ -11,7 +11,6 @@ import { AppContextData, useAppContext } from "@/components/ContextProvider";
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const [rows, setRows] = useState<DictionaryEntry[]>([]);
   const contextData = useAppContext().data;
   const setContextData = useAppContext().setContextData;
 
@@ -26,9 +25,9 @@ export function useDictionarySearch() {
       setContextData(newContextData)
       try {
         const entries = await getDictionaryEntries();
-        setRows(entries);
         // 成功加载状态
         const successContextData: AppContextData = {...contextData,
+          dictionaryEntries: entries,
           status: { ...contextData.status,
             dictionary: { ...contextData.status.dictionary, state: "success", totalEntries: entries.length }
           }
@@ -36,7 +35,6 @@ export function useDictionarySearch() {
         setContextData(successContextData )
       } catch (error) {
         console.error("Failed to load dictionary:", error);
-        setRows([]);
         // 加载失败状态
         const errorContextData: AppContextData = {...contextData,
           status: { ...contextData.status,
@@ -50,6 +48,8 @@ export function useDictionarySearch() {
     loadDictionary();
   }, []);
 
+  const rows = contextData.dictionaryEntries;
+
   const filteredRows = useMemo(() => {
     if (!searchText) {
       return rows;
@@ -60,17 +60,15 @@ export function useDictionarySearch() {
         value.toLowerCase().includes(normalized)
       )
     );
-  }, [rows, searchText]);
+  }, [searchText]);
 
   return {
     searchText,
     setSearchText,
-    rows,
     filteredRows,
   } satisfies {
     searchText: string;
     setSearchText: (value: string) => void;
-    rows: DictionaryEntry[];
     filteredRows: DictionaryEntry[];
   };
 }

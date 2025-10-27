@@ -1,10 +1,16 @@
 "use client";
 
-import { useDictionarySearch } from "@/hooks/useDictionarySearch";
+import { useEffect } from "react";
 
 
 export function ReloadDictionaryButton() {
+  useEffect(() => {
+    const loadDictionary = async () => {
 
+    };
+
+    loadDictionary();
+  }, []);
 }
 
 export default ReloadDictionaryButton;
