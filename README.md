@@ -1,38 +1,19 @@
 # 道本之树 kasi-pi-toki-pona
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+这是一个使用树状结构来将自然语言（中文）解析并转化为toki pona的翻译器。
 
-## Getting Started
+该项目使用Next.js，未来可能在Vercel上部署。
 
-First, run the development server:
+## 目录结构
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `app/page.tsx`：页面入口，组合各个功能区域。
+- `app/api/*`：示例 API Route，占位符逻辑可替换为真实实现。
+- `components/`：按功能区拆分的 React 组件，包括 React Context 管理全局状态。
+- `hooks/`：相关的 React Hooks。
+- `lib/`：工具函数。
+- `types/`：共享的 TypeScript 类型定义。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 后续工作
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **真实数据源**：替换 `lib` 与 `hooks` 中的假数据逻辑，改为调用实际的 API 或数据库。
+2. **API 安全**：在 `app/api` 路由中实现鉴权、错误处理与日志上报。
