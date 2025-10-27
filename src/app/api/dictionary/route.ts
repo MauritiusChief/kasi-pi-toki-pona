@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
-import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
+import { getDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
 
 export async function GET() {
-  return NextResponse.json({
-    status: "placeholder",
-    message: "返回示例字典数据，待替换为真实逻辑。",
-    data: getSampleDictionaryEntries(),
-  });
+  try {
+    const data = await getDictionaryEntries();
+    return NextResponse.json({
+      status: "success",
+      message: "字典数据加载成功。",
+      data,
+    });
+  } catch (error) {
+    console.error("Error in dictionary API:", error);
+    return NextResponse.json({
+      status: "error",
+      message: "字典数据加载失败。",
+      data: [],
+    }, { status: 500 });
+  }
 }

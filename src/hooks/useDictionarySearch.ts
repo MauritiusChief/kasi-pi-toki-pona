@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { DictionaryEntry } from "@/types/dictionary";
-import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
+import { getDictionaryEntries } from "@/lib/placeholders/dictionaryClient";
 
 /**
  * 根据搜索的文本，返回命中的字典条目行以及其他需要的函数
@@ -10,7 +10,24 @@ import { getSampleDictionaryEntries } from "@/lib/placeholders/dictionaryClient"
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const rows = useMemo(() => getSampleDictionaryEntries(), []);
+  const [rows, setRows] = useState<DictionaryEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadDictionary = async () => {
+      try {
+        const entries = await getDictionaryEntries();
+        setRows(entries);
+      } catch (error) {
+        console.error("Failed to load dictionary:", error);
+        setRows([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDictionary();
+  }, []);
 
   const filteredRows = useMemo(() => {
     if (!searchText) {
@@ -29,10 +46,12 @@ export function useDictionarySearch() {
     setSearchText,
     rows,
     filteredRows,
+    isLoading,
   } satisfies {
     searchText: string;
     setSearchText: (value: string) => void;
     rows: DictionaryEntry[];
     filteredRows: DictionaryEntry[];
+    isLoading: boolean;
   };
 }
