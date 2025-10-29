@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import type { DictionaryEntry } from "@/types/dictionary";
 import { loadDictionary } from "@/lib/dictionaryClient";
-import { useAppContext } from "@/components/ContextProvider";
+import { useStatusContext, useDictionaryContext } from "@/components/ContextProvider";
 
 /**
  * 根据搜索的文本，返回命中的字典条目行以及其他需要的函数
@@ -11,14 +11,14 @@ import { useAppContext } from "@/components/ContextProvider";
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const appContext = useAppContext();
-  const contextData = appContext.data;
+  const dictionaryContext = useDictionaryContext();
+  const statusContest = useStatusContext()
 
   useEffect(() => {
-    loadDictionary(appContext);
+    loadDictionary(statusContest, dictionaryContext);
   }, []);
 
-  const rows = contextData.dictionaryEntries;
+  const rows = dictionaryContext.dictionaryEntries;
 
   const filteredRows = useMemo(() => {
     if (!searchText) {

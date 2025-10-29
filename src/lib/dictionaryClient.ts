@@ -1,5 +1,7 @@
-import { AppContextData, AppContextType } from "@/components/ContextProvider";
+
+import type { DictionaryContext, StatusContext } from "@/types/context";
 import type { DictionaryEntry } from "@/types/dictionary";
+import { ApiStatus, DictionaryStatus } from "@/types/status";
 
 export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
   try {
@@ -43,35 +45,30 @@ export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
  * 呼叫getDictionaryEntries函数，把返回的结果视状态（成功/失败）放入Context
  * @param appContext 装载字典目录的Context
  */
-export async function loadDictionary(appContext: AppContextType) {
-  const contextData = appContext.data;
-  const setContextData = appContext.setContextData;
+export async function loadDictionary(statusContext: StatusContext, dictionaryContext: DictionaryContext) {
+  const prevStauts = statusContext.status;
+  const setContextStatus = statusContext.setContextStatus;
+  const setContextDictionary = dictionaryContext.setContextDictionary;
 
   // 加载中状态
-  const newContextData: AppContextData = {...contextData,
-    status: { ...contextData.status,
-      dictionary: { ...contextData.status.dictionary, state: "loading" }
-    }
+  const newStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { ...prevStauts,
+    dictionary: { ...prevStauts.dictionary, state: "loading" }
   };
-  setContextData(newContextData)
+  setContextStatus(newStatus)
   try {
     const entries = await getDictionaryEntries();
     // 成功加载状态
-    const successContextData: AppContextData = {...contextData,
-      dictionaryEntries: entries,
-      status: { ...contextData.status,
-        dictionary: { ...contextData.status.dictionary, state: "success", totalEntries: entries.length }
-      }
+    setContextDictionary(entries)
+    const successContextData: {dictionary: DictionaryStatus, api: ApiStatus} = { ...prevStauts,
+      dictionary: { ...prevStauts.dictionary, state: "success", totalEntries: entries.length }
     };
-    setContextData(successContextData )
+    setContextStatus(successContextData )
   } catch (error) {
     console.error("Failed to load dictionary:", error);
     // 加载失败状态
-    const errorContextData: AppContextData = {...contextData,
-      status: { ...contextData.status,
-        dictionary: { ...contextData.status.dictionary, state: "error", errorMessage: String(error) }
-      }
+    const errorContextData: {dictionary: DictionaryStatus, api: ApiStatus} = {...prevStauts,
+      dictionary: { ...prevStauts.dictionary, state: "error", errorMessage: String(error) }
     };
-    setContextData(errorContextData)
+    setContextStatus(errorContextData)
   }
 }

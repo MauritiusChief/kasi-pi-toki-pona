@@ -1,65 +1,87 @@
 "use client"
 
-import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
-import { ApiStatus, DictionaryStatus } from "@/types/status";
-import { DictionaryEntry } from "@/types/dictionary";
+import { createContext, useContext, useState } from "react";
+import type { ApiStatus, DictionaryStatus } from "@/types/status";
+import type { DictionaryEntry } from "@/types/dictionary";
+import type { DataContext, DictionaryContext, StatusContext } from "@/types/context";
+import type { SentenceNodeEntry } from "@/types/structure";
 
-/**
- * 规范所有需要跨组件共享的数据信息和函数
- */
-export type AppContextType = {
-  data: AppContextData,
-  setContextData: Dispatch<SetStateAction<AppContextData>>
+// 各种初始Context
+const defaultStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { // 仅用于规范初始StatusContext
+  dictionary: {state: "loading", totalEntries: 0, errorMessage: ""},
+  api: {state: "loading", message: ""},
 }
-/**
- * 共享的数据
- */
-export type AppContextData = {
-  dictionaryEntries: DictionaryEntry[],
-  status: {
-    dictionary: DictionaryStatus,
-    api: ApiStatus,
-  },
+const defaultStatusContext: StatusContext = {
+  status: defaultStatus,
+  setContextStatus: ()=>{}
 }
-
-const defaultAppContextData: AppContextData = {
+const defaultDataContext: DataContext = {
+  input: "",
+  structureTree: []
+}
+const defaultDictionaryContext: DictionaryContext = {
   dictionaryEntries: [],
-  status: {
-    dictionary: {state: "loading", totalEntries: 0, errorMessage: ""},
-    api: {state: "loading", message: ""},
-  }
-}
-const defaultAppContext: AppContextType = {
-  data: defaultAppContextData,
-  setContextData: ()=>{}
+  setContextDictionary: ()=>{}
 }
 
-const AppContext = createContext<AppContextType>(defaultAppContext);
+const statusContext = createContext<StatusContext>(defaultStatusContext);
+const dataContext = createContext<DataContext>(defaultDataContext);
+const dictionaryContext = createContext<DictionaryContext>(defaultDictionaryContext);
 
 /**
- * 构建Context tag
+ * 构建StatusContext tag
  * @param param0
  * @returns
  */
-export function AppContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  // 管理Context中的data
-  const [contextData, setContextData] = useState<AppContextData>(defaultAppContextData);
-
-  const value: AppContextType = {data: contextData, setContextData: setContextData}
+export function StatusProvider({children}: {children: React.ReactNode}) {
+  const [status, setContextStatus] = useState<{dictionary: DictionaryStatus, api: ApiStatus}>(defaultStatus);
 
   return (
-    <AppContext.Provider value={value}>
+    <statusContext.Provider value={{status, setContextStatus}}>
       {children}
-    </AppContext.Provider>
+    </statusContext.Provider>
   );
 }
+/**
+ * 供其他组件获取StatusContext的函数
+ */
+export const useStatusContext = () => useContext(statusContext);
 
 /**
- * 供其他组件获取Context的函数
+ * 构建DataContext tag
+ * @param param0
  * @returns
  */
-export const useAppContext = () => useContext(AppContext);
+export function DataProvider({children}: {children: React.ReactNode}) {
+  const [input, setContextInput] = useState<String>("");
+  const [structureTree, setContextStructureTree] = useState<SentenceNodeEntry[]>([]);
+
+  return (
+    <dataContext.Provider value={{input, structureTree}}>
+      {children}
+    </dataContext.Provider>
+  );
+}
+/**
+ * 供其他组件获取DataContext的函数
+ */
+export const useDataContext = () => useContext(dataContext);
+
+/**
+ * 构建DictionaryContext tag
+ * @param param0
+ * @returns
+ */
+export function DictionaryProvider({children}: {children: React.ReactNode}) {
+  const [dictionaryEntries, setContextDictionary] = useState<DictionaryEntry[]>([]);
+
+  return (
+    <dictionaryContext.Provider value={{dictionaryEntries, setContextDictionary}}>
+      {children}
+    </dictionaryContext.Provider>
+  );
+}
+/**
+ * 供其他组件获取DictionaryContext的函数
+ */
+export const useDictionaryContext = () => useContext(dictionaryContext);

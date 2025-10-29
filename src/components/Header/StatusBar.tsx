@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppContext } from "@/components/ContextProvider";
+import { useStatusContext } from "@/components/ContextProvider";
 import type { ApiStatus, DictionaryStatus, StatusState } from "@/types/status";
 
 /**
@@ -86,7 +86,7 @@ function renderApiBadge(state: StatusState, message?: string) {
  * @returns
  */
 export function StatusBar() {
-  const appContextData = useAppContext().data
+  const appContextData = useStatusContext()
   const dictionaryStatus: DictionaryStatus = appContextData.status.dictionary;
   const apiStatus: ApiStatus = appContextData.status.api;
 

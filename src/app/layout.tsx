@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppContextProvider } from "@/components/ContextProvider";
+import { StatusProvider, DataProvider, DictionaryProvider } from "@/components/ContextProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,11 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AppContextProvider>
-        <body>
-          {children}
-        </body>
-      </AppContextProvider>
+      {/* 层层叠叠的ContextProvider，我也没招了 */}
+      <DataProvider>
+        <StatusProvider>
+          <DictionaryProvider>
+            <body>
+              {children}
+            </body>
+          </DictionaryProvider>
+        </StatusProvider>
+      </DataProvider>
     </html>
   );
 }
