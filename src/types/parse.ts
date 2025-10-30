@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { SentenceNodeEntry } from "./structure";
 
 
 export type Msg = { role: "user" | "system" | "assistant"; content: string };
@@ -18,7 +19,7 @@ export type ExtractDelta = (obj: any) => {
 };
 
 export type StreamParseParams = {
-  /** 供 fetch 的 url，例如 "/api/parse_paragraph" */
+  /** 供 fetch 的 url，例如 "/api/parse" */
   url: string;
   /** request body 中要发送的 messages */
   messages: Msg[];
@@ -27,6 +28,7 @@ export type StreamParseParams = {
   /** 外层传入：设置信息的 setter */
   setSending: (sending: boolean) => void;
   setLogs: Dispatch<SetStateAction<ReasoningLog[]>>;
+  setStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>;
   /** 此次流式会写入/覆盖的日志 id（例如 "root" / "sentence-xxx"） */
   logId: string;
 

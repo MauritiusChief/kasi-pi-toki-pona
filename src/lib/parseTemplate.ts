@@ -1,5 +1,7 @@
 import { ExtractDelta, ReasoningLog, StreamParseParams } from "@/types/parse";
-import { Dispatch, SetStateAction } from "react";
+import { SentenceNodeEntry } from "@/types/structure";
+import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
+import { createId } from "@/lib/createId";
 
 const defaultExtractDelta: ExtractDelta = (obj: any) => {
   const delta = obj?.choices?.[0]?.delta ?? {};
@@ -29,10 +31,37 @@ function upsertStartLog(setLogs: Dispatch<SetStateAction<ReasoningLog[]>>, logId
   );
 }
 
-function writeEnd(setLogs: Dispatch<SetStateAction<ReasoningLog[]>>, logId: string) {
-  setLogs((logs) =>
-    logs.map((l) => (l.id === logId ? { ...l, endAt: new Date() } : l))
-  );
+function writeEnd(
+  setLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
+  logId: string,
+  setStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>,
+) {
+  let logContent: string = ""
+  setLogs((logs) => logs.map((l) => {
+    if (l.id !== logId) return l
+    logContent = l.content
+    // console.log("content:",l.content) // 为了DEBUG暂时如此
+    // console.log("reasoning:",l.reasoning) // 为了DEBUG暂时如此
+    return { ...l, endAt: new Date() }
+  }));
+  type frameType = {tkContext: string, tkSubject: string, tkOther: string}
+  if (!logContent) return // 若content没有东西，则直接退出 TODO 检测其他意外情况
+  const frames: frameType[] = JSON.parse(logContent).result
+  // TODO: setStructureTree 没能出发渲染，需要检查
+  frames.forEach( frame => useEffect(() => {
+    setStructureTree((current) => [
+      ...current,
+      {
+        id: createId("sentence"),
+        summary: "",
+        expanded: true,
+        sending: false,
+        tkContext: frame.tkContext,
+        tkSubject: frame.tkSubject,
+        tkOther: frame.tkOther,
+      },
+    ]);
+  }, []));
 }
 
 function appendChunks(
@@ -61,6 +90,7 @@ export async function streamParse({
   setSending,
   setLogs,
   logId,
+  setStructureTree,
   extractDelta = defaultExtractDelta,
   onEventJSON,
 }: StreamParseParams) {
@@ -105,7 +135,7 @@ export async function streamParse({
 
         // 会话结束
         if (payload === "[DONE]") {
-          writeEnd(setLogs, logId);
+          writeEnd(setLogs, logId, setStructureTree);
           setSending(false);
           continue;
         }

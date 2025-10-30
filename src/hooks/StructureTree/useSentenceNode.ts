@@ -29,11 +29,10 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
     setEntries((current) => [
       ...current,
       {
-        id: createId("entry"),
+        id: createId("sentence"),
         summary: "（空）",
         expanded: true,
         sending: false,
-        elapsed: 0, // TODO: 需要适配LLM的思索（若有）
         tkContext: "",
         tkSubject: "",
         tkOther: "",

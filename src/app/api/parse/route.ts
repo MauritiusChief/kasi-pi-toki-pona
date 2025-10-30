@@ -16,8 +16,9 @@ export async function POST(request: Request) {
     body: JSON.stringify({
       model,
       messages,
-      stream: true,             // 开启流式（SSE）——官方说明 :contentReference[oaicite:4]{index=4}
-      reasoning,                 // :contentReference[oaicite:5]{index=5}
+      stream: true, // 开启流式（SSE）——官方说明 :contentReference[oaicite:4]{index=4}
+      reasoning, // :contentReference[oaicite:5]{index=5}
+      response_format: { type: 'json_object' }
     }),
   });
 

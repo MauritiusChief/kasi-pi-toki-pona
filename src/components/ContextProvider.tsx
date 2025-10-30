@@ -65,7 +65,8 @@ export const useStatusContext = () => useContext(statusContext);
 export function DataProvider({children}: {children: React.ReactNode}) {
   const [inputParagraph, setContextInputParagraph] = useState<ParagraphNode>({input: "小孩在屋子里吃饭", sending: false});
   const [structureTree, setContextStructureTree] = useState<SentenceNodeEntry[]>([]);
-  const [choice, setApiChoice] = useState<string>("nvidia/nemotron-nano-12b-v2-vl:free");
+  // const [choice, setApiChoice] = useState<string>("nvidia/nemotron-nano-12b-v2-vl:free");
+  const [choice, setApiChoice] = useState<string>("nvidia/nemotron-nano-9b-v2:free");
   const [key, setApiKey] = useState<string>("");
 
   const api = {choice, setApiChoice, key, setApiKey}
