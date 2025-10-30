@@ -1,10 +1,10 @@
 "use client"
 
 import { createContext, useContext, useState } from "react";
-import type { ApiStatus, DictionaryStatus } from "@/types/status";
+import type { ReasoningLog, ApiStatus, DictionaryStatus } from "@/types/status";
 import type { DictionaryEntry } from "@/types/dictionary";
 import type { DataContext, DictionaryContext, StatusContext } from "@/types/context";
-import type { SentenceNodeEntry } from "@/types/structure";
+import type { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
 
 // 各种初始Context
 const defaultStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { // 仅用于规范初始StatusContext
@@ -13,11 +13,19 @@ const defaultStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { // 仅�
 }
 const defaultStatusContext: StatusContext = {
   status: defaultStatus,
-  setContextStatus: ()=>{}
+  setContextStatus: ()=>{},
+  reasoningLogs: [],
+  setContextResoningLogs: ()=>{},
 }
 const defaultDataContext: DataContext = {
-  input: "",
-  structureTree: []
+  api: {
+    choice: "", setApiChoice: ()=>{},
+    key: "", setApiKey: ()=>{},
+  },
+  inputParagraph: {input: "", sending: false},
+  setContextInputParagraph: ()=>{},
+  structureTree: [],
+  setContextStructureTree: ()=>{},
 }
 const defaultDictionaryContext: DictionaryContext = {
   dictionaryEntries: [],
@@ -29,15 +37,16 @@ const dataContext = createContext<DataContext>(defaultDataContext);
 const dictionaryContext = createContext<DictionaryContext>(defaultDictionaryContext);
 
 /**
- * 构建StatusContext tag
+ * 构建StatusContext tag, 包含状态、思索过程，以及对应的修改函数
  * @param param0
  * @returns
  */
 export function StatusProvider({children}: {children: React.ReactNode}) {
   const [status, setContextStatus] = useState<{dictionary: DictionaryStatus, api: ApiStatus}>(defaultStatus);
+  const [reasoningLogs, setContextResoningLogs] = useState<ReasoningLog[]>([])
 
   return (
-    <statusContext.Provider value={{status, setContextStatus}}>
+    <statusContext.Provider value={{status, setContextStatus, reasoningLogs, setContextResoningLogs}}>
       {children}
     </statusContext.Provider>
   );
@@ -48,16 +57,20 @@ export function StatusProvider({children}: {children: React.ReactNode}) {
 export const useStatusContext = () => useContext(statusContext);
 
 /**
- * 构建DataContext tag
+ * 构建DataContext tag, 包含输入、输出和结构树，以及对应的修改函数
  * @param param0
  * @returns
  */
 export function DataProvider({children}: {children: React.ReactNode}) {
-  const [input, setContextInput] = useState<String>("");
+  const [inputParagraph, setContextInputParagraph] = useState<ParagraphNode>({input: "小孩在屋子里吃饭", sending: false});
   const [structureTree, setContextStructureTree] = useState<SentenceNodeEntry[]>([]);
+  const [choice, setApiChoice] = useState<string>("nvidia/nemotron-nano-12b-v2-vl:free");
+  const [key, setApiKey] = useState<string>("");
+
+  const api = {choice, setApiChoice, key, setApiKey}
 
   return (
-    <dataContext.Provider value={{input, structureTree}}>
+    <dataContext.Provider value={{api, inputParagraph, setContextInputParagraph, structureTree, setContextStructureTree}}>
       {children}
     </dataContext.Provider>
   );

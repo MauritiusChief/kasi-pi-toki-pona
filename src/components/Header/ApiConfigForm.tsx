@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useDataContext, useStatusContext } from "@/components/ContextProvider";
 
 /**
  * API管理栏：输入API地址(deepseek, openai, etc)和API密钥
  * @returns
  */
 export function ApiConfigForm() {
-  const [apiUrl, setApiUrl] = useState("https://api.example.com/parse");
-  const [apiKey, setApiKey] = useState("");
+  const dataContext = useDataContext()
+  const statusContext = useStatusContext()
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3" data-testid="api-config-form">
@@ -18,8 +18,8 @@ export function ApiConfigForm() {
         </label>
         <input
           id="api-endpoint"
-          value={apiUrl}
-          onChange={(event) => setApiUrl(event.target.value)}
+          value={dataContext.api.choice}
+          onChange={()=>console.log("暂不允许改变"+dataContext.api.choice)}
           type="text"
           placeholder="https://api.example.com/parse"
           className="w-full rounded-md border px-3 py-2 text-sm"
@@ -31,8 +31,8 @@ export function ApiConfigForm() {
         </label>
         <input
           id="api-key"
-          value={apiKey}
-          onChange={(event) => setApiKey(event.target.value)}
+          value={dataContext.api.key}
+          onChange={(event) => dataContext.api.setApiKey(event.target.value)}
           type="password"
           placeholder="••••••••"
           className="w-full rounded-md border px-3 py-2 text-sm"

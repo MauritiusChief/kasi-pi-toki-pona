@@ -1,14 +1,18 @@
 "use client";
 
 import { useParserPlaceholder } from "@/hooks/useParserPlaceholder";
+import { useDataContext, useStatusContext } from "@/components/ContextProvider";
+import { useParseParagraph } from "@/hooks/Parser/useParseParagraph";
 
 /**
  * 解析面板：上部为输入框和发送按钮，下部为结果框/思考过程框（TODO: 在此以日志条目的样式显示思考过程）
  * @returns
  */
 export function ParserPanel() {
-  const { inputSentence, setInputSentence, isParsing, parse, resultSentence, inputHint } =
-    useParserPlaceholder();
+  const dataContext = useDataContext()
+  const inputParagraph = dataContext.inputParagraph
+  const setContextInputParagraph = dataContext.setContextInputParagraph
+  const statusContext = useStatusContext()
 
   return (
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="parser-panel">
@@ -19,17 +23,17 @@ export function ParserPanel() {
             {/* 标题 */}
             <div className="w-full">
               <h2 className="text-base font-semibold">输入</h2>
-              <p className="mt-0.5 text-xs text-gray-500">{inputHint}</p>
+              <p className="mt-0.5 text-xs text-gray-500">输入要分解的句子，请勿输入过于复杂（从句套从句）的句子。</p>
             </div>
             {/* 发送按钮 */}
             <button
               type="button"
-              onClick={parse}
-              disabled={isParsing || !inputSentence}
+              onClick={()=>useParseParagraph(dataContext, statusContext)}
+              disabled={inputParagraph.sending || !inputParagraph.input}
               className="rounded-md border px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-100"
               aria-label="解析句子"
             >
-              {isParsing ? (
+              {inputParagraph.sending ? (
                 <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 008 12H4z"></path>
@@ -42,8 +46,8 @@ export function ParserPanel() {
             </button>
           </div>
           <textarea
-            value={inputSentence}
-            onChange={(event) => setInputSentence(event.target.value)}
+            value={inputParagraph.input}
+            onChange={(event) => setContextInputParagraph({...inputParagraph, input: event.target.value})}
             className="flex-1 resize-none rounded-md border px-3 py-2 text-sm"
             placeholder="例如：小孩在屋子里吃饭。"
           />
@@ -52,11 +56,22 @@ export function ParserPanel() {
         {/* 结果部分 */}
         <div className="flex flex-col">
           <div className="mb-2">
-            <h2 className="text-base font-semibold">结果</h2>
-            <p className="mt-0.5 text-xs text-gray-500">这里显示根据结构树生成的内容（占位）。</p>
+            <h2 className="text-base font-semibold">日志/结果</h2>
+            <p className="mt-0.5 text-xs text-gray-500">显示思索过程/最终结果</p>
           </div>
           <div className="flex-1 overflow-auto rounded-md border bg-gray-50 p-3 text-sm">
-            <p className="text-gray-500">{resultSentence}</p>
+            <div className="text-gray-500">
+              {statusContext.reasoningLogs.map(log => {
+                const endTimeStamp = log.endAt ? log.endAt : new Date()
+                const timeDuration = Math.floor((endTimeStamp.getTime() - log.startAt.getTime())/1000)
+                const tail = log.reasoning.slice(-40)
+                return <div key={log.id}>
+                  <div className="text-xs font-mono">
+                    {timeDuration} …{tail}
+                  </div>
+                </div>
+              })}
+            </div>
           </div>
         </div>
       </div>

@@ -1,25 +1,37 @@
 import { Dispatch, SetStateAction } from "react";
-import { ApiStatus, DictionaryStatus } from "@/types/status";
+import { ApiStatus, DictionaryStatus, ReasoningLog } from "@/types/status";
 import { DictionaryEntry } from "@/types/dictionary";
-import { SentenceNodeEntry } from "@/types/structure";
+import { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
+
+export type Msg = { role: "user" | "system" | "assistant"; content: string };
 
 /**
  * 跨组件共享的状态Context，包含状态、思索过程，以及对应的修改函数
- * TODO 由于思索过程需要对应的结构树ID，可能需要放置在DataContext内部
+ * 由于思索过程需要对应的结构树ID，可能需要放置在DataContext内部
  */
 export type StatusContext = {
   status: {
     dictionary: DictionaryStatus,
     api: ApiStatus,
   },
-  setContextStatus: Dispatch<SetStateAction<{dictionary: DictionaryStatus, api: ApiStatus}>>
+  setContextStatus: Dispatch<SetStateAction<{dictionary: DictionaryStatus, api: ApiStatus}>>,
+  reasoningLogs: ReasoningLog[],
+  setContextResoningLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
 }
 /**
  * 跨组件共享的数据Context，包含输入、输出和结构树，以及对应的修改函数
  */
 export type DataContext = {
-  input: String,
-  structureTree: SentenceNodeEntry[]
+  api: {
+    choice: string,
+    setApiChoice: Dispatch<SetStateAction<string>>,
+    key: string,
+    setApiKey: Dispatch<SetStateAction<string>>,
+  },
+  inputParagraph: ParagraphNode,
+  setContextInputParagraph: Dispatch<SetStateAction<ParagraphNode>>,
+  structureTree: SentenceNodeEntry[],
+  setContextStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>,
 }
 /**
  * 跨组件共享的字典Context，以及对应的修改函数
