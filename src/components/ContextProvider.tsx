@@ -1,10 +1,11 @@
 "use client"
 
 import { createContext, useContext, useState } from "react";
-import type { ReasoningLog, ApiStatus, DictionaryStatus } from "@/types/status";
+import type { ApiStatus, DictionaryStatus } from "@/types/status";
 import type { DictionaryEntry } from "@/types/dictionary";
 import type { DataContext, DictionaryContext, StatusContext } from "@/types/context";
 import type { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
+import { ReasoningLog } from "@/types/parse";
 
 // 各种初始Context
 const defaultStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { // 仅用于规范初始StatusContext

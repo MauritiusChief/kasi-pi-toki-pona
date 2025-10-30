@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { ApiStatus, DictionaryStatus, ReasoningLog } from "@/types/status";
+import { ApiStatus, DictionaryStatus } from "@/types/status";
 import { DictionaryEntry } from "@/types/dictionary";
 import { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
-
-export type Msg = { role: "user" | "system" | "assistant"; content: string };
+import { ReasoningLog } from "@/types/parse";
 
 /**
  * 跨组件共享的状态Context，包含状态、思索过程，以及对应的修改函数
