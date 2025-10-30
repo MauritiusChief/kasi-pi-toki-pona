@@ -1,22 +1,19 @@
 "use client";
 
-import { useStructureTree } from "@/hooks/useStructureTree";
 import SentenceNodeEntriesRow from "./SentenceNodeEntryRow";
 import useSentenceNodes from "@/hooks/StructureTree/useSentenceNode";
+import { useDataContext } from "../ContextProvider";
 
 /**
  * 结构树面板：可互动的层叠UI结构树
  * @returns
  */
 export function StructureTreePanel() {
-  const {
-    entries,
-    setEntries,
-  } = useStructureTree();
+  const {structureTree, setContextStructureTree} = useDataContext()
 
   const {
     addSentenceNode
-  } = useSentenceNodes(setEntries)
+  } = useSentenceNodes(setContextStructureTree)
 
   return (
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="structure-tree-panel">
@@ -29,17 +26,17 @@ export function StructureTreePanel() {
       {/* 内容面板 */}
       {/* TODO: 需要动态适应不同状态的结构树，所以最好做成通过一个组件获取tag们 */}
       <div className="max-h-96 flex flex-col gap-3 overflow-auto">
-        {entries.length === 0 ? ( // 无句子
+        {structureTree.length === 0 ? ( // 无句子
           <div className="rounded-lg border border-dashed border-gray-400 bg-gray-50 px-4 py-6 text-center text-sm text-gray-500">
             暂无结构条目，请先解析或点击下方“添加条目”。
           </div>
         ) : ( // 有句子
           <div className="pr-1">
             <div className="space-y-2">
-              {entries.map((entry) => (
+              {structureTree.map((structureNodeEntry) => (
                 // 每个句子条目
-                <div key={entry.id} className="rounded-lg border bg-white shadow-sm">
-                  <SentenceNodeEntriesRow entry={entry} setEntries={setEntries}/>
+                <div key={structureNodeEntry.id} className="rounded-lg border bg-white shadow-sm">
+                  <SentenceNodeEntriesRow entry={structureNodeEntry} setEntries={setContextStructureTree}/>
                 </div>
               ))}
             </div>
