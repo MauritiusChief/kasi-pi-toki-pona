@@ -1,6 +1,5 @@
 "use client";
 
-import { useParserPlaceholder } from "@/hooks/useParserPlaceholder";
 import { useDataContext, useStatusContext } from "@/components/ContextProvider";
 import { useParseParagraph } from "@/hooks/Parser/useParseParagraph";
 
@@ -64,10 +63,10 @@ export function ParserPanel() {
               {statusContext.reasoningLogs.map(log => {
                 const endTimeStamp = log.endAt ? log.endAt : new Date()
                 const timeDuration = Math.floor((endTimeStamp.getTime() - log.startAt.getTime())/1000)
-                const tail = log.reasoning.slice(-40)
+                const tail = log.reasoning.slice(-30)
                 return <div key={log.id}>
                   <div className="text-xs font-mono">
-                    {timeDuration} …{tail}
+                    时长{timeDuration}s …{tail}
                   </div>
                 </div>
               })}

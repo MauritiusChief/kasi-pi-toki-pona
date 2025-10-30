@@ -16,26 +16,16 @@ export async function useParseParagraph(dataContext: DataContext, statusContext:
 
   setContextInputParagraph({...inputParagraph, sending: true})
 
-  setContextResoningLogs((logs) => [ // 新建一条段落节点思索日志
-    {
+  setContextResoningLogs(logs => { // 若无重复id则新建一条段落节点思索日志，有则更新之
+    const newEntry = {
       id: "root",
       startAt: new Date(),
       content: "",
       reasoning: "",
       expanded: false,
-    },...logs,
-  ])
-  setContextResoningLogs(logs => { // 若无重复id则新建一条段落节点思索日志
-  return logs.some(l => l.id === "root") ? logs :
-    [
-      {
-        id: "root",
-        startAt: new Date(),
-        content: "",
-        reasoning: "",
-        expanded: false,
-      }, ...logs
-    ];
+    };
+    if (!logs.some(l => l.id === "root")) return [newEntry, ...logs]; // 新建日志
+    return logs.map(log => log.id === "root" ? newEntry : log) // 更新日志
   });
   const controller = new AbortController();
 
