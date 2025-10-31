@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { ReloadDictionaryButton } from "@/components/Header/ReloadDictionaryButton";
-import { useDictionaryContext } from "@/components/ContextProvider";
+import { loadDictionary } from "@/lib/dictionaryClient";
+import { useDictionaryContext, useStatusContext } from "@/components/ContextProvider";
 import { AVAILABLE_DICTIONARIES, getDictionaryConfigById } from "@/lib/dictionaries";
 
 /**
@@ -10,7 +10,8 @@ import { AVAILABLE_DICTIONARIES, getDictionaryConfigById } from "@/lib/dictionar
  * @returns
  */
 export function DictionaryControls() {
-  const { currentDictionaryId, setCurrentDictionaryId } = useDictionaryContext();
+  const statusContext = useStatusContext()
+  const { currentDictionaryId, setCurrentDictionaryId, setContextDictionary } = useDictionaryContext();
 
   const nextDictionary = useMemo(() => {
     const currentIndex = AVAILABLE_DICTIONARIES.findIndex((dictionary) => dictionary.id === currentDictionaryId);
@@ -37,6 +38,7 @@ export function DictionaryControls() {
   return (
     <div className="flex flex-wrap items-center gap-2" data-testid="dictionary-controls">
       <span className="text-sm font-semibold text-gray-700">字典管理</span>
+      {/* 切换字典按钮 */}
       <button
         type="button"
         className="rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50"
@@ -50,7 +52,17 @@ export function DictionaryControls() {
       >
         切换字典
       </button>
-      <ReloadDictionaryButton/>
+      {/* 刷新字典按钮 */}
+      <button
+        type="button"
+        className="rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50"
+        title="刷新字典状态"
+        onClick={() => {
+          loadDictionary(statusContext, setContextDictionary, currentDictionaryId);
+        }}
+      >
+        刷新状态
+      </button>
     </div>
   );
 }
