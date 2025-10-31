@@ -113,8 +113,8 @@ export function SentenceNodeEntriesRow({
         <div className="space-y-3 border-t bg-gray-50 px-5 py-3">
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">情景</span>
-            <textarea
-              value={typeof entry.tkContext === 'string' ? entry.tkContext : '暂不支持此Type'}
+            <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttContextNodePanel 组件
+              value={typeof entry.tkContext === 'string' ? entry.tkContext : 'type适配更新中'}
               onChange={(event) => updateEntryField(entry.id, "tkContext", event.target.value)}
               rows={2}
               className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
@@ -123,8 +123,8 @@ export function SentenceNodeEntriesRow({
           </div>
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">主语</span>
-            <textarea
-              value={entry.tkSubject}
+            <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttSubjectNodePanel 组件
+              value={typeof entry.tkSubject === 'string' ? entry.tkSubject : 'type适配更新中'}
               onChange={(event) => updateEntryField(entry.id, "tkSubject", event.target.value)}
               rows={2}
               className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
@@ -133,8 +133,8 @@ export function SentenceNodeEntriesRow({
           </div>
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">其他</span>
-            <textarea
-              value={entry.tkOther}
+            <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttOtherNodePanel 组件
+              value={typeof entry.tkOther === 'string' ? entry.tkOther : 'type适配更新中'}
               onChange={(event) => updateEntryField(entry.id, "tkOther", event.target.value)}
               rows={2}
               className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"

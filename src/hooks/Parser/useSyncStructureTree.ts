@@ -55,6 +55,7 @@ export function useSyncStructureTree({
           return "（略）"
         }
 
+        // TODO 更新到结构树时，不仅仅只是 sentence 了，还要注意到 tkXxx 现在可能不是字符串，还可能是 CstttXxxNode
         if (frames.length > 0) {
           setContextStructureTree((current) => [
             ...current,

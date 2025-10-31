@@ -77,7 +77,10 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
    * 向解析器发送句子节点
    */
   const sendSentenceNode = useCallback((id: string) => {
-    console.info("sendSentenceNode placeholder invoked", { id });
+    // console.info("sendSentenceNode placeholder invoked", { id });
+    // TODO: 功能设置为将句子中尚未解析 tkXxx 一键全部发送出去
+    // 因此，需要先实现将未解析 tkXxx 发送出去的功能（在useParseSentence.ts）
+
   }, []);
 
   /**
