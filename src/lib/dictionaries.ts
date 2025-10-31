@@ -1,12 +1,12 @@
 export const AVAILABLE_DICTIONARIES = [
   {
     id: "default",
-    name: "标准字典",
+    name: "默认字典",
     file: "/dictionary_default.csv",
   },
   {
     id: "emoji",
-    name: "Emoji 扩展字典",
+    name: "Emoji 字典",
     file: "/dictionary_emoji.csv",
   },
 ] as const;

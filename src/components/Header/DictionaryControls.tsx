@@ -13,9 +13,6 @@ export function DictionaryControls() {
   const { currentDictionaryId, setCurrentDictionaryId } = useDictionaryContext();
 
   const nextDictionary = useMemo(() => {
-    if (AVAILABLE_DICTIONARIES.length === 0) {
-      return null;
-    }
     const currentIndex = AVAILABLE_DICTIONARIES.findIndex((dictionary) => dictionary.id === currentDictionaryId);
     const safeIndex = currentIndex === -1 ? 0 : currentIndex;
     const nextIndex = (safeIndex + 1) % AVAILABLE_DICTIONARIES.length;
