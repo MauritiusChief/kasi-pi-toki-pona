@@ -42,12 +42,25 @@ export function useSyncStructureTree({
         const frames: { tkContext?: string; tkSubject?: string; tkOther?: string }[] =
           Array.isArray(parsed?.result) ? parsed.result : [];
 
+        // 裁切函数
+        const trct = (text: string): string => {
+          if (text.length <= 4) return text;
+          return text.slice(0, 3) + '...';
+        }
+        // 同步更新标题
+        const summaryFromFrame = (frame: { tkContext?: string; tkSubject?: string; tkOther?: string }): string => {
+          if (typeof frame.tkContext === 'string' && typeof frame.tkSubject === 'string' && typeof frame.tkOther === 'string') {
+            return `${trct(frame.tkContext)} | ${trct(frame.tkSubject)} | ${trct(frame.tkOther)}`
+          }
+          return "（略）"
+        }
+
         if (frames.length > 0) {
           setContextStructureTree((current) => [
             ...current,
             ...frames.map((frame) => ({
               id: createId("sentence"),
-              summary: "",
+              summary: summaryFromFrame(frame),
               expanded: true,
               sending: false,
               tkContext: frame.tkContext ?? "",
