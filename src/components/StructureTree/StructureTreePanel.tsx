@@ -24,7 +24,6 @@ export function StructureTreePanel() {
       </div>
 
       {/* 内容面板 */}
-      {/* TODO: 需要动态适应不同状态的结构树，所以最好做成通过一个组件获取tag们 */}
       <div className="max-h-96 flex flex-col gap-3 overflow-auto">
         {structureTree.length === 0 ? ( // 无句子
           <div className="rounded-lg border border-dashed border-gray-400 bg-gray-50 px-4 py-6 text-center text-sm text-gray-500">

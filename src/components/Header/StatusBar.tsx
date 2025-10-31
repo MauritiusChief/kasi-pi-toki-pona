@@ -86,9 +86,9 @@ function renderApiBadge(state: StatusState, message?: string) {
  * @returns
  */
 export function StatusBar() {
-  const appContextData = useStatusContext()
-  const dictionaryStatus: DictionaryStatus = appContextData.status.dictionary;
-  const apiStatus: ApiStatus = appContextData.status.api;
+  const statusContext = useStatusContext()
+  const dictionaryStatus: DictionaryStatus = statusContext.status.dictionary;
+  const apiStatus: ApiStatus = statusContext.status.api;
 
   return (
     <div className="flex flex-wrap items-center gap-3" data-testid="status-bar">

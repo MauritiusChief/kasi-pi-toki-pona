@@ -5,7 +5,7 @@ import { useParseParagraph } from "@/hooks/Parser/useParseParagraph";
 import { useSyncStructureTree } from "@/hooks/Parser/useSyncStructureTree";
 
 /**
- * 解析面板：上部为输入框和发送按钮，下部为结果框/思考过程框（TODO: 在此以日志条目的样式显示思考过程）
+ * 解析面板：上部为输入框和发送按钮，下部为结果框/思考过程框
  * @returns
  */
 export function ParserPanel() {
