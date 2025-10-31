@@ -1,8 +1,5 @@
 import { ExtractDelta, ReasoningLog, StreamParseParams } from "@/types/parse";
-import { SentenceNodeEntry } from "@/types/structure";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { createId } from "@/lib/createId";
-import { useDataContext, useStatusContext } from "@/components/ContextProvider";
+import { Dispatch, SetStateAction } from "react";
 
 const defaultExtractDelta: ExtractDelta = (obj: any) => {
   const delta = obj?.choices?.[0]?.delta ?? {};
@@ -36,67 +33,11 @@ function writeEnd(
   setLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
   logId: string,
 ) {
-  console.log("writeEnd触发")
-  // 只更新 endAt / 待同步标记，不碰 structureTree
-  setLogs(prev =>
-    prev.map(l => l.id === logId
-      ? { ...l, endAt: new Date(), needsSyncToTree: true }
-      : l
-    )
+  setLogs((prev) =>
+    prev.map((l) =>
+      l.id === logId ? { ...l, endAt: new Date(), needsSyncToTree: true } : l,
+    ),
   );
-}
-
-function LogsToTreeBridge(
-  setStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>,
-  reasoningLogs: ReasoningLog[],
-  setReasoningLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
-) {
-  console.log("LogsToTreeBridge 1触发")
-  // const { setContextResoningLogs, reasoningLogs } = useStatusContext(); // ReasoningLog[]
-  const processedRef = useRef(new Set<string>()); // 去重（dev 严格模式友好）
-  console.log("LogsToTreeBridge 2触发")
-
-  useEffect(() => {
-    // 找到首个“需要同步且未处理”的 log
-    const target = reasoningLogs.find(
-      l => l.needsSyncToTree && l.endAt && l.content && !processedRef.current.has(l.id)
-    );
-    if (!target) return;
-
-    try {
-      const frames: { tkContext: string; tkSubject: string; tkOther: string }[] =
-        JSON.parse(target.content).result ?? [];
-      console.log(frames)
-
-      setStructureTree((current) => [
-        ...current,
-        ...frames.map(frame => ({
-          id: createId("sentence"),
-          summary: "",
-          expanded: true,
-          sending: false,
-          tkContext: frame.tkContext,
-          tkSubject: frame.tkSubject,
-          tkOther: frame.tkOther,
-          // // 可选：记录来源，便于去重/追溯
-          // sourceLogId: target.id,
-        })),
-      ]);
-
-      processedRef.current.add(target.id);
-      // 永久化“已同步”标记，避免热刷新后重复
-      setReasoningLogs(prev => prev.map(l =>
-        l.id === target.id ? { ...l, needsSyncToTree: false } : l
-      ));
-    } catch (e) {
-      console.error("解析 log.content 失败：", e, target.content);
-      // 解析失败也别无限重试
-      processedRef.current.add(target.id);
-      setReasoningLogs(prev => prev.map(l =>
-        l.id === target.id ? { ...l, needsSyncToTree: false } : l
-      ));
-    }
-  }, [reasoningLogs, setReasoningLogs, setStructureTree]);
 }
 
 function appendChunks(
@@ -125,8 +66,6 @@ export async function streamParse({
   setSending,
   setLogs,
   logId,
-  setStructureTree,
-  reasoningLogs,
   extractDelta = defaultExtractDelta,
   onEventJSON,
 }: StreamParseParams) {
@@ -171,11 +110,7 @@ export async function streamParse({
 
         // 会话结束
         if (payload === "[DONE]") {
-          console.log("payload为[DONE]")
           writeEnd(setLogs, logId);
-          console.log("writeEnd之后")
-          LogsToTreeBridge(setStructureTree, reasoningLogs, setLogs);
-          console.log("LogsToTreeBridge之后")
           setSending(false);
           continue;
         }
