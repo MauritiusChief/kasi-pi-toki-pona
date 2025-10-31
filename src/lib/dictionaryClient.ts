@@ -1,12 +1,15 @@
 
-import type { DictionaryContext, StatusContext } from "@/types/context";
 import type { DictionaryEntry } from "@/types/dictionary";
+import type { DictionaryContext, StatusContext } from "@/types/context";
+import type { DictionaryId } from "@/lib/dictionaries";
 import { ApiStatus, DictionaryStatus } from "@/types/status";
+import { getDictionaryConfigById } from "@/lib/dictionaries";
 
-export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
+export async function getDictionaryEntries(dictionaryId: DictionaryId): Promise<DictionaryEntry[]> {
   try {
+    const dictionaryConfig = getDictionaryConfigById(dictionaryId);
     // 从公共目录获取 CSV 文件
-    const response = await fetch('/dictionary_default.csv');
+    const response = await fetch(dictionaryConfig.file);
     if (!response.ok) {
       throw new Error(`Failed to fetch dictionary: ${response.status}`);
     }
@@ -45,10 +48,13 @@ export async function getDictionaryEntries(): Promise<DictionaryEntry[]> {
  * 呼叫getDictionaryEntries函数，把返回的结果视状态（成功/失败）放入Context
  * @param appContext 装载字典目录的Context
  */
-export async function loadDictionary(statusContext: StatusContext, dictionaryContext: DictionaryContext) {
+export async function loadDictionary(
+  statusContext: StatusContext,
+  setContextDictionary: DictionaryContext["setContextDictionary"],
+  dictionaryId: DictionaryId,
+) {
   const prevStauts = statusContext.status;
   const setContextStatus = statusContext.setContextStatus;
-  const setContextDictionary = dictionaryContext.setContextDictionary;
 
   // 加载中状态
   const newStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { ...prevStauts,
@@ -56,7 +62,7 @@ export async function loadDictionary(statusContext: StatusContext, dictionaryCon
   };
   setContextStatus(newStatus)
   try {
-    const entries = await getDictionaryEntries();
+    const entries = await getDictionaryEntries(dictionaryId);
     // 成功加载状态
     setContextDictionary(entries)
     const successContextData: {dictionary: DictionaryStatus, api: ApiStatus} = { ...prevStauts,

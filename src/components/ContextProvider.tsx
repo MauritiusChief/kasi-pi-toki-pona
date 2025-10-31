@@ -6,6 +6,7 @@ import type { DictionaryEntry } from "@/types/dictionary";
 import type { DataContext, DictionaryContext, StatusContext } from "@/types/context";
 import type { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
 import { ReasoningLog } from "@/types/parse";
+import { AVAILABLE_DICTIONARIES } from "@/lib/dictionaries";
 
 // 各种初始Context
 const defaultStatus: {dictionary: DictionaryStatus, api: ApiStatus} = { // 仅用于规范初始StatusContext
@@ -30,7 +31,9 @@ const defaultDataContext: DataContext = {
 }
 const defaultDictionaryContext: DictionaryContext = {
   dictionaryEntries: [],
-  setContextDictionary: ()=>{}
+  setContextDictionary: ()=>{},
+  currentDictionaryId: AVAILABLE_DICTIONARIES[0].id,
+  setCurrentDictionaryId: ()=>{},
 }
 
 const statusContext = createContext<StatusContext>(defaultStatusContext);
@@ -89,9 +92,10 @@ export const useDataContext = () => useContext(dataContext);
  */
 export function DictionaryProvider({children}: {children: React.ReactNode}) {
   const [dictionaryEntries, setContextDictionary] = useState<DictionaryEntry[]>([]);
+  const [currentDictionaryId, setCurrentDictionaryId] = useState(AVAILABLE_DICTIONARIES[0].id);
 
   return (
-    <dictionaryContext.Provider value={{dictionaryEntries, setContextDictionary}}>
+    <dictionaryContext.Provider value={{dictionaryEntries, setContextDictionary, currentDictionaryId, setCurrentDictionaryId}}>
       {children}
     </dictionaryContext.Provider>
   );
