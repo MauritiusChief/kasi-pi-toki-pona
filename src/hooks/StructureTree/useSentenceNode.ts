@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useCallback} from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { createId } from "@/lib/createId";
 import { SentenceNodeEntry } from "@/types/structure";
 
@@ -46,6 +46,32 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
   const removeSentenceNode = useCallback((id: string) => {
     setEntries((current) => current.filter((entry) => entry.id !== id));
   }, []);
+
+  /**
+   * 调整句子节点的位置
+   */
+  const moveSentenceNode = useCallback((id: string, direction: -1 | 1) => {
+    setEntries((current) => {
+      const index = current.findIndex((entry) => entry.id === id);
+      if (index === -1) return current;
+
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= current.length) return current;
+
+      const nextEntries = [...current];
+      const [entry] = nextEntries.splice(index, 1);
+      nextEntries.splice(targetIndex, 0, entry);
+      return nextEntries;
+    });
+  }, []);
+
+  const moveSentenceNodeUp = useCallback((id: string) => {
+    moveSentenceNode(id, -1);
+  }, [moveSentenceNode]);
+
+  const moveSentenceNodeDown = useCallback((id: string) => {
+    moveSentenceNode(id, 1);
+  }, [moveSentenceNode]);
 
   /**
    * 向解析器发送句子节点
@@ -99,6 +125,8 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
     toggleSentenceNode,
     addSentenceNode,
     removeSentenceNode,
+    moveSentenceNodeUp,
+    moveSentenceNodeDown,
     sendSentenceNode,
     canSendSentenceNode,
     structureSummary,
