@@ -33,10 +33,15 @@ export function StructureTreePanel() {
         ) : ( // 有句子
           <div className="pr-1">
             <div className="space-y-2">
-              {structureTree.map((structureNodeEntry) => (
+              {structureTree.map((structureNodeEntry, index) => (
                 // 每个句子条目
                 <div key={structureNodeEntry.id} className="rounded-lg border bg-white shadow-sm">
-                  <SentenceNodeEntriesRow entry={structureNodeEntry} setEntries={setContextStructureTree}/>
+                  <SentenceNodeEntriesRow
+                    entry={structureNodeEntry}
+                    index={index}
+                    total={structureTree.length}
+                    setEntries={setContextStructureTree}
+                  />
                 </div>
               ))}
             </div>

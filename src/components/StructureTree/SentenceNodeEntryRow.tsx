@@ -9,7 +9,17 @@ import { SentenceNodeEntry } from "@/types/structure";
  * @param props 单一条目entry 和 useSentenceNodes所使用的setEntries函数
  * @returns
  */
-export function SentenceNodeEntriesRow({entry, setEntries}: {entry: SentenceNodeEntry, setEntries: Dispatch<SetStateAction<SentenceNodeEntry[]>>}) {
+export function SentenceNodeEntriesRow({
+  entry,
+  index,
+  total,
+  setEntries,
+}: {
+  entry: SentenceNodeEntry;
+  index: number;
+  total: number;
+  setEntries: Dispatch<SetStateAction<SentenceNodeEntry[]>>;
+}) {
   const {
     toggleSentenceNode,
     removeSentenceNode,
@@ -17,29 +27,57 @@ export function SentenceNodeEntriesRow({entry, setEntries}: {entry: SentenceNode
     canSendSentenceNode,
     structureSummary,
     updateEntryField,
+    moveSentenceNodeUp,
+    moveSentenceNodeDown,
   } = useSentenceNodes(setEntries);
 
   return (
     <>
       {/* 条目本体 */}
       <div className="flex items-center gap-2 px-3 py-2">
-        {/* 展开/收起按钮 */}
-        <button
-          type="button"
-          className="flex h-7 w-7 items-center justify-center rounded border text-gray-500 hover:bg-gray-100"
-          onClick={() => toggleSentenceNode(entry.id)}
-          aria-label={entry.expanded ? "收起条目" : "展开条目"}
-        >
-          {entry.expanded ? (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          ) : (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-          )}
-        </button>
+        {/* 展开/收起 + 顺序调整按钮 */}
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            className="flex h-7 w-7 items-center justify-center rounded border text-gray-500 hover:bg-gray-100"
+            onClick={() => toggleSentenceNode(entry.id)}
+            aria-label={entry.expanded ? "收起条目" : "展开条目"}
+          >
+            {entry.expanded ? (
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            ) : (
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            )}
+          </button>
+          <div className="flex h-7 w-7 flex-col overflow-hidden rounded border text-gray-500">
+            <button
+              type="button"
+              className="flex flex-1 items-center justify-center border-b border-gray-200 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={() => moveSentenceNodeUp(entry.id)}
+              disabled={index === 0}
+              aria-label="向上移动条目"
+            >
+              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 15l-6-6-6 6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="flex flex-1 items-center justify-center hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={() => moveSentenceNodeDown(entry.id)}
+              disabled={index === total - 1}
+              aria-label="向下移动条目"
+            >
+              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
         {/* 条目标题\句子描述 */}
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-gray-800">{structureSummary(entry)}</p>
