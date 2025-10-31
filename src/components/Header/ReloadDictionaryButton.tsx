@@ -6,14 +6,14 @@ import { loadDictionary } from "@/lib/dictionaryClient";
 
 export function ReloadDictionaryButton() {
   const statusContext = useStatusContext()
-  const dictionaryContext = useDictionaryContext()
+  const { setContextDictionary, currentDictionaryId } = useDictionaryContext()
   return (
     <button
       type="button"
       className="rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50"
       title="刷新字典状态"
       onClick={() => {
-        loadDictionary(statusContext, dictionaryContext);
+        loadDictionary(statusContext, setContextDictionary, currentDictionaryId);
       }}
     >
       刷新状态

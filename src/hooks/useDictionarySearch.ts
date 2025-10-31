@@ -11,14 +11,14 @@ import { useStatusContext, useDictionaryContext } from "@/components/ContextProv
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const dictionaryContext = useDictionaryContext();
+  const { dictionaryEntries, setContextDictionary, currentDictionaryId } = useDictionaryContext();
   const statusContest = useStatusContext()
 
   useEffect(() => {
-    loadDictionary(statusContest, dictionaryContext);
-  }, []);
+    loadDictionary(statusContest, setContextDictionary, currentDictionaryId);
+  }, [currentDictionaryId]);
 
-  const rows = dictionaryContext.dictionaryEntries;
+  const rows = dictionaryEntries;
 
   const filteredRows = useMemo(() => {
     if (!searchText) {
@@ -30,7 +30,7 @@ export function useDictionarySearch() {
         value.toLowerCase().includes(normalized)
       )
     );
-  }, [searchText]);
+  }, [rows, searchText]);
 
   return {
     searchText,

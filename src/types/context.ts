@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { ApiStatus, DictionaryStatus } from "@/types/status";
-import { DictionaryEntry } from "@/types/dictionary";
-import { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
-import { ReasoningLog } from "@/types/parse";
+import type { Dispatch, SetStateAction } from "react";
+import type { ApiStatus, DictionaryStatus } from "@/types/status";
+import type { DictionaryEntry } from "@/types/dictionary";
+import type { DictionaryId } from "@/lib/dictionaries";
+import type { ParagraphNode, SentenceNodeEntry } from "@/types/structure";
+import type { ReasoningLog } from "@/types/parse";
 
 /**
  * 跨组件共享的状态Context，包含状态、思索过程，以及对应的修改函数
@@ -37,5 +38,8 @@ export type DataContext = {
  */
 export type DictionaryContext = {
   dictionaryEntries: DictionaryEntry[],
-  setContextDictionary: Dispatch<SetStateAction<DictionaryEntry[]>>
+  setContextDictionary: Dispatch<SetStateAction<DictionaryEntry[]>>,
+  currentDictionaryId: DictionaryId,
+  setCurrentDictionaryId: Dispatch<SetStateAction<DictionaryId>>,
 }
+
