@@ -2,6 +2,7 @@
 
 import { useDataContext, useStatusContext } from "@/components/ContextProvider";
 import { useParseParagraph } from "@/hooks/Parser/useParseParagraph";
+import { useSyncStructureTree } from "@/hooks/Parser/useSyncStructureTree";
 
 /**
  * 解析面板：上部为输入框和发送按钮，下部为结果框/思考过程框（TODO: 在此以日志条目的样式显示思考过程）
@@ -12,6 +13,13 @@ export function ParserPanel() {
   const inputParagraph = dataContext.inputParagraph
   const setContextInputParagraph = dataContext.setContextInputParagraph
   const statusContext = useStatusContext()
+
+  useSyncStructureTree({
+    structureTree: dataContext.structureTree,
+    setContextStructureTree: dataContext.setContextStructureTree,
+    reasoningLogs: statusContext.reasoningLogs,
+    setContextResoningLogs: statusContext.setContextResoningLogs,
+  })
 
   return (
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="parser-panel">

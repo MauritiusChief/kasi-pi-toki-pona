@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-import { SentenceNodeEntry } from "./structure";
 
 
 export type Msg = { role: "user" | "system" | "assistant"; content: string };
@@ -29,8 +28,6 @@ export type StreamParseParams = {
   /** 外层传入：设置信息的 setter */
   setSending: (sending: boolean) => void;
   setLogs: Dispatch<SetStateAction<ReasoningLog[]>>;
-  setStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>;
-  reasoningLogs: ReasoningLog[],
   /** 此次流式会写入/覆盖的日志 id（例如 "root" / "sentence-xxx"） */
   logId: string;
 
