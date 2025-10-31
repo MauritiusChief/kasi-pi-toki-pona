@@ -35,7 +35,7 @@ ${examples}
 
 export async function useParseParagraph(dataContext: DataContext, statusContext: StatusContext) {
   const { api, inputParagraph, setContextInputParagraph, structureTree, setContextStructureTree } = dataContext;
-  const { setContextResoningLogs } = statusContext;
+  const { reasoningLogs, setContextResoningLogs } = statusContext;
 
   setContextInputParagraph({...inputParagraph, sending: true})
 
@@ -55,7 +55,8 @@ export async function useParseParagraph(dataContext: DataContext, statusContext:
     setSending: (sending) => setContextInputParagraph((prev) => ({ ...prev, sending })),
     setLogs: setContextResoningLogs,
     logId: "root",
-    setStructureTree: setContextStructureTree
+    setStructureTree: setContextStructureTree,
+    reasoningLogs,
 
     // 如果你的后端将“思考”片段放在别的字段，可自定义 extractDelta
     // extractDelta: (obj) => ({ contentChunk: ..., reasoningChunk: ... }),

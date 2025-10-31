@@ -11,6 +11,7 @@ export type ReasoningLog = {
   content: string; // 实时拼接的最终回答
   reasoning: string; // 实时拼接的 reasoning
   expanded: boolean;
+  needsSyncToTree?: boolean
 }
 
 export type ExtractDelta = (obj: any) => {
@@ -29,6 +30,7 @@ export type StreamParseParams = {
   setSending: (sending: boolean) => void;
   setLogs: Dispatch<SetStateAction<ReasoningLog[]>>;
   setStructureTree: Dispatch<SetStateAction<SentenceNodeEntry[]>>;
+  reasoningLogs: ReasoningLog[],
   /** 此次流式会写入/覆盖的日志 id（例如 "root" / "sentence-xxx"） */
   logId: string;
 
