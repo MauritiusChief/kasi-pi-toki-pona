@@ -112,28 +112,11 @@ export function SentenceNodeEntriesRow({
       {/* 条目展开栏 */}
       {entry.expanded && (
         <div className="space-y-3 border-t bg-gray-50 px-5 py-3">
-          <div className="grid grid-cols-[25px_auto_30px] items-start gap-2">
-            <span className="pt-1 text-xs font-medium text-gray-500">情景</span>
-            <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttContextNodePanel 组件
-              value={typeof entry.tkContext === 'string' ? entry.tkContext : 'type适配更新中'}
-              onChange={(event) => updateEntryField(entry.id, "tkContext", event.target.value)}
-              rows={1}
-              className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
-              placeholder="描述情景或条件"
-            />
-            <button
-              type="button"
-              className="flex h-7 w-7 items-center justify-center rounded border text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
-              onClick={() => console.log("情景发送按钮")}
-              disabled={false}
-              aria-label={"发送条目"}
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" />
-                <path d="M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          <CstttContextNodePanel
+            entry={entry}
+            onChange={(value) => updateEntryField(entry.id, "tkContext", value)}
+            setEntries={setEntries}
+          />
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">主语</span>
             <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttSubjectNodePanel 组件
