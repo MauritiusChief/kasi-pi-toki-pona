@@ -1,8 +1,8 @@
 "use client";
 
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { createId } from "@/lib/createId";
-import { SentenceNodeEntry } from "@/types/structure";
+import type { SentenceNodeEntry } from "@/types/structure";
 
 /**
  * 使用setEntries创建管理函数，在句子一级管理结构树
@@ -97,31 +97,31 @@ export function useSentenceNodes(setEntries: Dispatch<SetStateAction<SentenceNod
    * 更新句子节点，如果更新的内容是String则同步更新标题
    */
   const updateEntryField = useCallback(
-      (id: string, field: keyof Pick<SentenceNodeEntry, "tkContext" | "tkSubject" | "tkOther">, value: string) => {
-        // 裁切函数
-        const trct = (text: String): String => {
-          if (text.length <= 4) return text;
-          return text.slice(0, 3) + '...';
-        }
+    (id: string, field: keyof Pick<SentenceNodeEntry, "tkContext" | "tkSubject" | "tkOther">, value: string) => {
+      // 裁切函数
+      const trct = (text: String): String => {
+        if (text.length <= 4) return text;
+        return text.slice(0, 3) + '...';
+      }
 
-        setEntries((current) =>
-          current.map((entry) => {
-            if (entry.id === id) {
-              let newEntry = { ...entry, [field]: value, }
-              // 同步更新标题
-              if (typeof newEntry.tkContext === 'string' && typeof newEntry.tkSubject === 'string' && typeof newEntry.tkOther === 'string') {
-                newEntry.summary = `${trct(newEntry.tkContext)} | ${trct(newEntry.tkSubject)} | ${trct(newEntry.tkOther)}`
-              }
-              if (newEntry.tkContext === '' && newEntry.tkSubject === '' && newEntry.tkOther === '') newEntry.summary = '（空）'
-              return newEntry
-            } else {
-              return entry
+      setEntries((current) =>
+        current.map((entry) => {
+          if (entry.id === id) {
+            let newEntry = { ...entry, [field]: value, }
+            // 同步更新标题
+            if (typeof newEntry.tkContext === 'string' && typeof newEntry.tkSubject === 'string' && typeof newEntry.tkOther === 'string') {
+              newEntry.summary = `${trct(newEntry.tkContext)} | ${trct(newEntry.tkSubject)} | ${trct(newEntry.tkOther)}`
             }
+            if (newEntry.tkContext === '' && newEntry.tkSubject === '' && newEntry.tkOther === '') newEntry.summary = '（空）'
+            return newEntry
+          } else {
+            return entry
           }
-          )
-        );
-      },
-      []
+        }
+        )
+      );
+    },
+    []
   );
 
   return {
