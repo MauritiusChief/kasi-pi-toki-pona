@@ -17,28 +17,32 @@ type CstttContextNodePanelProps = {
 export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttContextNodePanelProps) {
   if (typeof entry.tkContext === "string") {
     return (
-      <div className="grid grid-cols-[25px_auto_30px] items-start gap-2">
-        <span className="pt-1 text-xs font-medium text-gray-500">情景</span>
-        <textarea
-          value={entry.tkContext}
-          onChange={(event) => onChange(event.target.value)}
-          rows={1}
-          className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
-          placeholder="描述情景或条件"
-        />
-        <button
-          type="button"
-          className="flex h-7 w-7 items-center justify-center rounded border text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
-          onClick={() => console.log("情景发送按钮")}
-          disabled={false}
-          aria-label="发送情景"
-        >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14" />
-            <path d="M12 5l7 7-7 7" />
-          </svg>
-        </button>
+      <div className="rounded-lg border">
+        {/* 标题部分 */}
+        <div className="flex items-center gap-2 px-3 py-2">
+          <span className="text-xs font-medium text-gray-500">情景</span>
+          <textarea
+            value={entry.tkContext}
+            onChange={(event) => onChange(event.target.value)}
+            rows={1}
+            className="w-7/9 rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
+            placeholder="描述情景或条件"
+          />
+          <button
+            type="button"
+            className="flex h-7 w-7 items-center justify-center rounded border text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={() => console.log("情景发送按钮")}
+            disabled={false}
+            aria-label="发送情景"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
+
     );
   }
 
@@ -62,6 +66,7 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white">
+      {/* 标题部分 */}
       <div className="flex items-center gap-2 px-3 py-2">
         <button
           type="button"
@@ -108,6 +113,7 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
           </svg>
         </button>
       </div>
+      {/* 底部列表 */}
       {contextNode.expanded && contextNode.content.length > 0 && (
         <div className="space-y-2 border-t border-gray-200 bg-gray-50 px-5 py-3 pl-11">
           {contextNode.content.map((node) => (
