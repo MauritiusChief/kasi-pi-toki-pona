@@ -103,7 +103,8 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 12a9 9 0 10-9 9" />
-            <path d="M21 12h-6" />
+            <path d="M22 12v-7" />
+            <path d="M22 12h-6" />
           </svg>
         </button>
       </div>
