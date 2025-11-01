@@ -61,8 +61,8 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
   };
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
+    <div className="rounded-lg border border-gray-200 bg-white">
+      <div className="flex items-center gap-2 px-3 py-2">
         <button
           type="button"
           className="flex h-7 w-7 items-center justify-center rounded border text-gray-500 hover:bg-gray-100"
@@ -109,14 +109,14 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
         </button>
       </div>
       {contextNode.expanded && contextNode.content.length > 0 && (
-        <div className="space-y-2 pl-9">
+        <div className="space-y-2 border-t border-gray-200 bg-gray-50 px-5 py-3 pl-11">
           {contextNode.content.map((node) => (
             <textarea
               key={node.id}
               value={node.label}
               readOnly
               rows={2}
-              className="w-full rounded-md border px-3 py-2 text-sm text-gray-700 focus:outline-none"
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-700 focus:outline-none"
             />
           ))}
         </div>
