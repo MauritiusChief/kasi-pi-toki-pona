@@ -17,10 +17,33 @@ export function StructureTreePanel() {
 
   return (
     <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="structure-tree-panel">
-      {/* 标题 */}
-      <div className="mb-3">
-        <h2 className="text-base font-semibold">结构树</h2>
-        <p className="mt-0.5 text-xs text-gray-500">提示（占位）</p>
+      {/* 标题和按钮 */}
+      <div className="mb-2 flex gap-2">
+        {/* 标题 */}
+        <div className="w-full">
+          <h2 className="text-base font-semibold">结构树</h2>
+          <p className="mt-0.5 text-xs text-gray-500">提示（占位）</p>
+        </div>
+        {/* 发送按钮 */}
+        <button
+          type="button"
+          onClick={()=>console.log("TODO: 根据当前解析情况，自动发送未解析的东西")}
+          disabled={true}
+          className="rounded-md border px-3 py-2 text-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-100"
+          aria-label="解析句子"
+        >
+          {false ? (
+            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 008 12H4z"></path>
+            </svg>
+          ) : (
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          )}
+        </button>
       </div>
 
       {/* 内容面板 */}
