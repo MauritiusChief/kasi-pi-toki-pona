@@ -1,7 +1,7 @@
 "use client";
 
-import { useDictionarySearch } from "@/hooks/useDictionarySearch";
 import { useDictionaryContext } from "@/components/ContextProvider";
+import { useDictionarySearch } from "@/hooks/useDictionarySearch";
 import { getDictionaryConfigById } from "@/lib/dictionaries";
 import { HighlightedText } from "@/lib/highlight";
 
@@ -21,10 +21,15 @@ export function DictionaryPanel() {
   }
 
   return (
-    <section className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4" data-testid="dictionary-panel">
+    <section
+      className="flex min-h-[60vh] flex-col rounded-2xl border bg-white p-4"
+      data-testid="dictionary-panel"
+    >
       <div className="mb-3">
         <h2 className="text-base font-semibold">查询字典</h2>
-        <p className="mt-0.5 text-xs text-gray-500">当前字典：{currentDictionaryName}</p>
+        <p className="mt-0.5 text-xs text-gray-500">
+          当前字典：{currentDictionaryName}
+        </p>
       </div>
 
       <div className="mb-3 flex gap-2">

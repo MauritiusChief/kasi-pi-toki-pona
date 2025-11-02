@@ -6,7 +6,13 @@ import { Fragment } from "react";
  * @param param 被高亮的文本 text 和查询的字段 query
  * @returns
  */
-export function HighlightedText({ text, query }: { text: string; query: string }) {
+export function HighlightedText({
+  text,
+  query,
+}: {
+  text: string;
+  query: string;
+}) {
   if (!query) {
     return <>{text}</>;
   }
@@ -14,37 +20,46 @@ export function HighlightedText({ text, query }: { text: string; query: string }
   const normalizedText = text.toLowerCase();
   const normalizedQuery = query.toLowerCase();
 
-  const segments: { value: string; highlighted: boolean }[] = [];
+  const segments: { value: string; highlighted: boolean; start: number }[] = [];
   let index = 0;
 
   while (index < text.length) {
     const matchIndex = normalizedText.indexOf(normalizedQuery, index);
     if (matchIndex === -1) {
-      segments.push({ value: text.slice(index), highlighted: false });
+      segments.push({
+        value: text.slice(index),
+        highlighted: false,
+        start: index,
+      });
       break;
     }
 
     if (matchIndex > index) {
-      segments.push({ value: text.slice(index, matchIndex), highlighted: false });
+      segments.push({
+        value: text.slice(index, matchIndex),
+        highlighted: false,
+        start: index,
+      });
     }
 
     segments.push({
       value: text.slice(matchIndex, matchIndex + normalizedQuery.length),
       highlighted: true,
+      start: matchIndex,
     });
     index = matchIndex + normalizedQuery.length;
   }
 
   return (
     <>
-      {segments.map((segment, segmentIndex) =>
+      {segments.map((segment) =>
         segment.highlighted ? (
-          <span key={segmentIndex} className="font-bold">
+          <span key={`${segment.start}-highlighted`} className="font-bold">
             {segment.value}
           </span>
         ) : (
-          <Fragment key={segmentIndex}>{segment.value}</Fragment>
-        )
+          <Fragment key={`${segment.start}-plain`}>{segment.value}</Fragment>
+        ),
       )}
     </>
   );

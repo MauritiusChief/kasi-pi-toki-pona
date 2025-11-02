@@ -1,9 +1,9 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
-import useSentenceNodes from "@/hooks/StructureTree/useSentenceNode";
-import { SentenceNodeEntry } from "@/types/structure";
+import type { Dispatch, SetStateAction } from "react";
 import { CstttContextNodePanel } from "@/components/StructureTree/ConstituteNodePanel";
+import useSentenceNodes from "@/hooks/StructureTree/useSentenceNode";
+import type { SentenceNodeEntry } from "@/types/structure";
 
 /**
  * 句子级节点面板
@@ -45,11 +45,29 @@ export function SentenceNodeEntriesRow({
             aria-label={entry.expanded ? "收起条目" : "展开条目"}
           >
             {entry.expanded ? (
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <title>收起条目</title>
                 <path d="M6 9l6 6 6-6" />
               </svg>
             ) : (
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <title>展开条目</title>
                 <path d="M9 6l6 6-6 6" />
               </svg>
             )}
@@ -62,7 +80,16 @@ export function SentenceNodeEntriesRow({
               disabled={index === 0}
               aria-label="向上移动条目"
             >
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="h-3 w-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <title>向上移动条目</title>
                 <path d="M18 15l-6-6-6 6" />
               </svg>
             </button>
@@ -73,7 +100,16 @@ export function SentenceNodeEntriesRow({
               disabled={index === total - 1}
               aria-label="向下移动条目"
             >
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="h-3 w-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <title>向下移动条目</title>
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </button>
@@ -81,7 +117,9 @@ export function SentenceNodeEntriesRow({
         </div>
         {/* 条目标题\句子描述 */}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-gray-800">{structureSummary(entry)}</p>
+          <p className="truncate text-sm font-medium text-gray-800">
+            {structureSummary(entry)}
+          </p>
         </div>
         {/* 发送按钮 */}
         <button
@@ -91,7 +129,16 @@ export function SentenceNodeEntriesRow({
           disabled={!canSendSentenceNode(entry)}
           aria-label={entry.sending ? "发送中" : "发送条目"}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <title>{entry.sending ? "发送中" : "发送条目"}</title>
             <path d="M5 12h14" />
             <path d="M12 5l7 7-7 7" />
           </svg>
@@ -103,7 +150,16 @@ export function SentenceNodeEntriesRow({
           onClick={() => removeSentenceNode(entry.id)}
           aria-label="删除条目"
         >
-          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-3.5 w-3.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <title>删除条目</title>
             <path d="M18 6L6 18" />
             <path d="M6 6l12 12" />
           </svg>
@@ -120,8 +176,14 @@ export function SentenceNodeEntriesRow({
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">主语</span>
             <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttSubjectNodePanel 组件
-              value={typeof entry.tkSubject === 'string' ? entry.tkSubject : 'type适配更新中'}
-              onChange={(event) => updateEntryField(entry.id, "tkSubject", event.target.value)}
+              value={
+                typeof entry.tkSubject === "string"
+                  ? entry.tkSubject
+                  : "type适配更新中"
+              }
+              onChange={(event) =>
+                updateEntryField(entry.id, "tkSubject", event.target.value)
+              }
               rows={2}
               className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
               placeholder="句子的主语"
@@ -130,8 +192,14 @@ export function SentenceNodeEntriesRow({
           <div className="grid grid-cols-[52px_1fr] items-start gap-2">
             <span className="pt-1 text-xs font-medium text-gray-500">其他</span>
             <textarea // TODO 更改为 ConstituteNodePanel 中的 CstttOtherNodePanel 组件
-              value={typeof entry.tkOther === 'string' ? entry.tkOther : 'type适配更新中'}
-              onChange={(event) => updateEntryField(entry.id, "tkOther", event.target.value)}
+              value={
+                typeof entry.tkOther === "string"
+                  ? entry.tkOther
+                  : "type适配更新中"
+              }
+              onChange={(event) =>
+                updateEntryField(entry.id, "tkOther", event.target.value)
+              }
               rows={2}
               className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-200"
               placeholder="其余成分"

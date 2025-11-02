@@ -11,10 +11,13 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error in dictionary API:", error);
-    return NextResponse.json({
-      status: "error",
-      message: "字典数据加载失败。",
-      data: [],
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        status: "error",
+        message: "字典数据加载失败。",
+        data: [],
+      },
+      { status: 500 },
+    );
   }
 }

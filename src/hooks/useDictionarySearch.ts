@@ -1,9 +1,12 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import type { DictionaryEntry } from "@/types/dictionary";
+import { useEffect, useMemo, useState } from "react";
+import {
+  useDictionaryContext,
+  useStatusContext,
+} from "@/components/ContextProvider";
 import { loadDictionary } from "@/lib/dictionaryClient";
-import { useStatusContext, useDictionaryContext } from "@/components/ContextProvider";
+import type { DictionaryEntry } from "@/types/dictionary";
 
 /**
  * 根据搜索的文本，返回命中的字典条目行以及其他需要的函数
@@ -11,12 +14,13 @@ import { useStatusContext, useDictionaryContext } from "@/components/ContextProv
  */
 export function useDictionarySearch() {
   const [searchText, setSearchText] = useState("");
-  const { dictionaryEntries, setContextDictionary, currentDictionaryId } = useDictionaryContext();
-  const statusContest = useStatusContext()
+  const { dictionaryEntries, setContextDictionary, currentDictionaryId } =
+    useDictionaryContext();
+  const { setContextStatus } = useStatusContext();
 
   useEffect(() => {
-    loadDictionary(statusContest, setContextDictionary, currentDictionaryId);
-  }, [currentDictionaryId]);
+    loadDictionary(setContextStatus, setContextDictionary, currentDictionaryId);
+  }, [currentDictionaryId, setContextDictionary, setContextStatus]);
 
   const rows = dictionaryEntries;
 
@@ -27,8 +31,8 @@ export function useDictionarySearch() {
     const normalized = searchText.trim().toLowerCase();
     return rows.filter((row) =>
       [row.source, row.translation, row.description].some((value) =>
-        value.toLowerCase().includes(normalized)
-      )
+        value.toLowerCase().includes(normalized),
+      ),
     );
   }, [rows, searchText]);
 
