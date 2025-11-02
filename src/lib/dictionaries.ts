@@ -14,13 +14,14 @@ export const AVAILABLE_DICTIONARIES = [
 export type DictionaryConfig = (typeof AVAILABLE_DICTIONARIES)[number];
 export type DictionaryId = DictionaryConfig["id"];
 
-const DICTIONARY_MAP: Record<DictionaryId, DictionaryConfig> = AVAILABLE_DICTIONARIES.reduce(
-  (accumulator, dictionary) => {
-    accumulator[dictionary.id] = dictionary;
-    return accumulator;
-  },
-  {} as Record<DictionaryId, DictionaryConfig>,
-);
+const DICTIONARY_MAP: Record<DictionaryId, DictionaryConfig> =
+  AVAILABLE_DICTIONARIES.reduce(
+    (accumulator, dictionary) => {
+      accumulator[dictionary.id] = dictionary;
+      return accumulator;
+    },
+    {} as Record<DictionaryId, DictionaryConfig>,
+  );
 
 export function getDictionaryConfigById(id: DictionaryId): DictionaryConfig {
   const dictionary = DICTIONARY_MAP[id];

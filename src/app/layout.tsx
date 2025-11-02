@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { StatusProvider, DataProvider, DictionaryProvider } from "@/components/ContextProvider";
+import {
+  DataProvider,
+  DictionaryProvider,
+  StatusProvider,
+} from "@/components/ContextProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,9 +22,7 @@ export default function RootLayout({
       <DataProvider>
         <StatusProvider>
           <DictionaryProvider>
-            <body>
-              {children}
-            </body>
+            <body>{children}</body>
           </DictionaryProvider>
         </StatusProvider>
       </DataProvider>

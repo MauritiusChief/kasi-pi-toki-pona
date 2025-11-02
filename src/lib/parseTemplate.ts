@@ -1,10 +1,25 @@
-import { ExtractDelta, ReasoningLog, StreamParseParams } from "@/types/parse";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import type {
+  ExtractDelta,
+  ReasoningLog,
+  StreamParseParams,
+} from "@/types/parse";
 
-const defaultExtractDelta: ExtractDelta = (obj: any) => {
-  const delta = obj?.choices?.[0]?.delta ?? {};
-  const contentChunk: string | undefined = delta?.content;
-  const reasoningChunk: string | undefined =
+type ChoiceDelta = {
+  content?: unknown;
+  reasoning?: unknown;
+};
+
+type CompletionChunk = {
+  choices?: Array<{ delta?: ChoiceDelta }>;
+};
+
+const defaultExtractDelta: ExtractDelta = (obj) => {
+  const completion = obj as CompletionChunk;
+  const delta = completion.choices?.[0]?.delta;
+  const contentChunk =
+    typeof delta?.content === "string" ? delta.content : undefined;
+  const reasoningChunk =
     typeof delta?.reasoning === "string" ? delta.reasoning : undefined;
   return { contentChunk, reasoningChunk };
 };
@@ -14,7 +29,10 @@ const defaultExtractDelta: ExtractDelta = (obj: any) => {
  * @param setLogs
  * @param logId
  */
-function upsertStartLog(setLogs: Dispatch<SetStateAction<ReasoningLog[]>>, logId: string) {
+function upsertStartLog(
+  setLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
+  logId: string,
+) {
   const newEntry: ReasoningLog = {
     id: logId,
     startAt: new Date(),
@@ -25,7 +43,7 @@ function upsertStartLog(setLogs: Dispatch<SetStateAction<ReasoningLog[]>>, logId
   setLogs((logs) =>
     logs.some((l) => l.id === logId)
       ? logs.map((l) => (l.id === logId ? newEntry : l))
-      : [newEntry, ...logs]
+      : [newEntry, ...logs],
   );
 }
 
@@ -44,7 +62,7 @@ function appendChunks(
   setLogs: Dispatch<SetStateAction<ReasoningLog[]>>,
   logId: string,
   contentChunk?: string,
-  reasoningChunk?: string
+  reasoningChunk?: string,
 ) {
   if (!contentChunk && !reasoningChunk) return;
   setLogs((logs) =>
@@ -55,7 +73,7 @@ function appendChunks(
         content: contentChunk ? l.content + contentChunk : l.content,
         reasoning: reasoningChunk ? l.reasoning + reasoningChunk : l.reasoning,
       };
-    })
+    }),
   );
 }
 
@@ -100,30 +118,40 @@ export async function streamParse({
 
       buffer += decoder.decode(value, { stream: true }); // 把reader获取的内容暂时加到buffer，若无\n说明这一行数据还没传输完毕。
 
-      let lineEnd: number;
-      while ((lineEnd = buffer.indexOf("\n")) !== -1) { // 获取到了\n，说明传输完毕了这一/若干行了，可以把传输完毕的这一/若干行提取出来
+      let lineEnd = buffer.indexOf("\n");
+      while (lineEnd !== -1) {
+        // 获取到了\n，说明传输完毕了这一/若干行了，可以把传输完毕的这一/若干行提取出来
         const line = buffer.slice(0, lineEnd).trim(); // 提取传输完毕的行
         buffer = buffer.slice(lineEnd + 1); // 未被提取的剩余部分保留在buffer中
-        if (!line || line.startsWith(":")) continue;
-        if (!line.startsWith("data:")) continue;
+        if (!line || line.startsWith(":")) {
+          lineEnd = buffer.indexOf("\n");
+          continue;
+        }
+        if (!line.startsWith("data:")) {
+          lineEnd = buffer.indexOf("\n");
+          continue;
+        }
         const payload = line.slice(5).trim(); // 去掉 "data:" 这五个字符，剩下的就是 payload
 
         // 会话结束
         if (payload === "[DONE]") {
           writeEnd(setLogs, logId);
           setSending(false);
+          lineEnd = buffer.indexOf("\n");
           continue;
         }
 
         // 从 payload 中获取思索和答案，然后将思索和答案添加到 logs 中去
         try {
-          const obj = JSON.parse(payload);
+          const obj: unknown = JSON.parse(payload);
           onEventJSON?.(obj);
           const { contentChunk, reasoningChunk } = extractDelta(obj);
           appendChunks(setLogs, logId, contentChunk, reasoningChunk);
         } catch {
           // 非 JSON（比如注释）忽略
         }
+
+        lineEnd = buffer.indexOf("\n");
       }
     }
   } catch (err) {
@@ -136,8 +164,8 @@ export async function streamParse({
               endAt: new Date(),
               content: `${l.content}\n\n[Error] ${(err as Error)?.message}`,
             }
-          : l
-      )
+          : l,
+      ),
     );
     setSending(false);
   }

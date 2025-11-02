@@ -1,11 +1,10 @@
-
 export type ParagraphNode = {
   // id: string; // 默认为 "root"
   input: string;
   sending: boolean;
 
   // sentenceNodes: SentenceNodeEntry[]
-}
+};
 
 /**
  * 结构树的句子级，包含字符串或者已解析的成分级结构
@@ -18,7 +17,7 @@ export type SentenceNodeEntry = {
   tkContext: string | CstttContextNode;
   tkSubject: string | CstttSubjectNode;
   tkOther: string | CstttOtherNode;
-}
+};
 
 /**
  * 结构树的成分级：背景节点
@@ -29,7 +28,7 @@ export type CstttContextNode = {
   expanded: boolean;
   sending: boolean;
   content: (PhraseThingNode | ClauseNode)[];
-}
+};
 
 /**
  * 结构树的成分级：主语节点
@@ -40,7 +39,7 @@ export type CstttSubjectNode = {
   expanded: boolean;
   sending: boolean;
   content: PhraseThingNode[];
-}
+};
 
 /**
  * 结构树的成分级：其他节点
@@ -51,7 +50,7 @@ export type CstttOtherNode = {
   expanded: boolean;
   sending: boolean;
   content: PredicatePlaceholderNode;
-}
+};
 
 /**
  * 谓语级：TODO
@@ -61,7 +60,7 @@ export type PredicatePlaceholderNode = {
   label: string;
   expanded: boolean;
   sending: boolean;
-}
+};
 
 /**
  * 短语级：事物短语 TODO 待完善
@@ -71,7 +70,7 @@ export type PhraseThingNode = {
   label: string;
   expanded: boolean;
   sending: boolean;
-}
+};
 
 /**
  * 从句：TODO 待完善
@@ -81,4 +80,4 @@ export type ClauseNode = {
   label: string;
   expanded: boolean;
   sending: boolean;
-}
+};

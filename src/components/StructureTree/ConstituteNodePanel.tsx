@@ -1,5 +1,4 @@
-
-import { type Dispatch, type SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import type { CstttContextNode, SentenceNodeEntry } from "@/types/structure";
 
@@ -14,7 +13,11 @@ type CstttContextNodePanelProps = {
   setEntries: SentenceEntriesSetter;
 };
 
-export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttContextNodePanelProps) {
+export function CstttContextNodePanel({
+  entry,
+  onChange,
+  setEntries,
+}: CstttContextNodePanelProps) {
   if (typeof entry.tkContext === "string") {
     return (
       <div className="rounded-lg border">
@@ -35,14 +38,22 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
             disabled={false}
             aria-label="发送情景"
           >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <title>发送情景</title>
               <path d="M5 12h14" />
               <path d="M12 5l7 7-7 7" />
             </svg>
           </button>
         </div>
       </div>
-
     );
   }
 
@@ -60,7 +71,7 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
             expanded: !item.tkContext.expanded,
           },
         };
-      })
+      }),
     );
   };
 
@@ -75,18 +86,38 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
           aria-label={contextNode.expanded ? "收起情景" : "展开情景"}
         >
           {contextNode.expanded ? (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <title>收起情景</title>
               <path d="M6 9l6 6 6-6" />
             </svg>
           ) : (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <title>展开情景</title>
               <path d="M9 6l6 6-6 6" />
             </svg>
           )}
         </button>
         <span className="text-xs font-medium text-gray-500">情景</span>
         <div className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-medium text-gray-800">{contextNode.label}</span>
+          <span className="block truncate text-sm font-medium text-gray-800">
+            {contextNode.label}
+          </span>
         </div>
         <button
           type="button"
@@ -95,7 +126,16 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
           disabled={contextNode.sending}
           aria-label={contextNode.sending ? "情景发送中" : "发送情景"}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <title>{contextNode.sending ? "情景发送中" : "发送情景"}</title>
             <path d="M5 12h14" />
             <path d="M12 5l7 7-7 7" />
           </svg>
@@ -106,7 +146,16 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
           onClick={() => console.log("情景重置按钮")}
           aria-label="重置情景"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <title>重置情景</title>
             <path d="M21 12a9 9 0 10-9 9" />
             <path d="M22 12v-7" />
             <path d="M22 12h-6" />
@@ -132,9 +181,9 @@ export function CstttContextNodePanel({ entry, onChange, setEntries }: CstttCont
 }
 
 export function CstttSubjectNodePanel() {
-  return <></>;
+  return null;
 }
 
 export function CstttOtherNodePanel() {
-  return <></>;
+  return null;
 }

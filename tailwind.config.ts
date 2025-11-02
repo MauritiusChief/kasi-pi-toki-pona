@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       borderColor: {
-        DEFAULT: '#e5e7eb', // 对应 border-gray-200
+        DEFAULT: "#e5e7eb", // 对应 border-gray-200
       },
     },
   },

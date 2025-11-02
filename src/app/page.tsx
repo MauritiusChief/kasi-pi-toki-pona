@@ -1,6 +1,6 @@
-import AppShell from "@/components/Layout/AppShell";
-import PageHeader from "@/components/Header/PageHeader";
 import DictionaryPanel from "@/components/Dictionary/DictionaryPanel";
+import PageHeader from "@/components/Header/PageHeader";
+import AppShell from "@/components/Layout/AppShell";
 import ParserPanel from "@/components/Parser/ParserPanel";
 import StructureTreePanel from "@/components/StructureTree/StructureTreePanel";
 

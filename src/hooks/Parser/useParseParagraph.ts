@@ -3,11 +3,14 @@
 import { parseParagraphExamples } from "@/lib/examples/parseParagraph";
 import { streamParse } from "@/lib/parseTemplate";
 import type { DataContext, StatusContext } from "@/types/context";
-import { Msg } from "@/types/parse";
+import type { Msg } from "@/types/parse";
 
-const examples = parseParagraphExamples.map( example =>
-  `输入：${example.input}\n拆分为以下${example.frames.length}个“类toki pona句子单元”：\n${JSON.stringify(example.frames, null, 2)}`
-).join('\n\n')
+const examples = parseParagraphExamples
+  .map(
+    (example) =>
+      `输入：${example.input}\n拆分为以下${example.frames.length}个“类toki pona句子单元”：\n${JSON.stringify(example.frames, null, 2)}`,
+  )
+  .join("\n\n");
 
 const prompt = `你是一个语义拆分器，请将用户提供的自然语言文本按照**类toki pona三段式**逻辑拆分为若干“类toki pona句子单元”。
 
@@ -29,15 +32,18 @@ const prompt = `你是一个语义拆分器，请将用户提供的自然语言�
 ## 示例
 
 ${examples}
-`
+`;
 
 // console.log(prompt)
 
-export async function useParseParagraph(dataContext: DataContext, statusContext: StatusContext) {
+export async function parseParagraph(
+  dataContext: DataContext,
+  statusContext: StatusContext,
+) {
   const { api, inputParagraph, setContextInputParagraph } = dataContext;
   const { setContextResoningLogs } = statusContext;
 
-  setContextInputParagraph({...inputParagraph, sending: true})
+  setContextInputParagraph({ ...inputParagraph, sending: true });
 
   const messages: Msg[] = [
     { role: "system", content: prompt },
@@ -52,7 +58,8 @@ export async function useParseParagraph(dataContext: DataContext, statusContext:
       model: api.choice,
       reasoning: { enabled: true },
     },
-    setSending: (sending) => setContextInputParagraph((prev) => ({ ...prev, sending })),
+    setSending: (sending) =>
+      setContextInputParagraph((prev) => ({ ...prev, sending })),
     setLogs: setContextResoningLogs,
     logId: "root",
 
@@ -64,5 +71,4 @@ export async function useParseParagraph(dataContext: DataContext, statusContext:
     //   // 比如：statusContext.setTokens(obj.usage?.total_tokens ?? 0);
     // },
   });
-
 }
